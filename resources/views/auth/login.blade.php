@@ -1,161 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <!-- Design by foolishdeveloper.com -->
-    <title>ONI</title>
- 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <!--Stylesheet-->
-    <style media="screen">
-      *,
-*:before,
-*:after{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-body{
-    background-color: #0b9e44;
-}
-.background{
-    width: 430px;
-    height: 520px;
-    position: absolute;
-    transform: translate(-50%,-50%);
-    left: 50%;
-    top: 50%;
-}
-.background .shape{
-    height: 200px;
-    width: 200px;
-    position: absolute;
-    border-radius: 50%;
-}
-.shape:first-child{
-    background: linear-gradient(
-        #F8C507,
-        #F8C507
-    );
-    left: -80px;
-    top: -80px;
-}
-.shape:last-child{
-    background: linear-gradient(
-        to right,
-        #F82B07,
-        #F82B07
-        
-    );
-    right: -30px;
-    bottom: -80px;
-}
-form{
-    height: 560px;
-    width: 440px;
-    background-color: rgba(255,255,255,0.13);
-    position: absolute;
-    transform: translate(-50%,-50%);
-    top: 50%;
-    left: 50%;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255,255,255,0.1);
-    box-shadow: 0 0 40px rgba(8,7,16,0.6);
-    padding: 50px 35px;
-}
-form *{
-    font-family: 'Poppins',sans-serif;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-    outline: none;
-    border: none;
-}
-form h3{
-    font-size: 32px;
-    font-weight: 500;
-    line-height: 42px;
-    text-align: center;
-}
+@extends('layouts/admin')
+@section('page-content')
 
-label{
-    display: block;
-    margin-top: 30px;
-    font-size: 16px;
-    font-weight: 500;
-}
-input{
-    display: block;
-    height: 50px;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.76);
-    border-radius: 3px;
-    padding: 0 10px;
-    margin-top: 8px;
-    font-size: 14px;
-    font-weight: 300;
-}
-::placeholder{
-    color: #e5e5e5;
-}
-.button{
-    width: 50%;
-    background-color: #ffffff;
-    color: #080710;
-    padding: 15px 0;
-    font-size: 15px;
-    font-weight: 600;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.social{
-  margin-top: 30px;
-  display: flex;
-}
-.social div{
-  background: red;
-  width: 150px;
-  border-radius: 3px;
-  padding: 5px 10px 10px 5px;
-  background-color: rgba(255,255,255,0.27);
-  color: #eaf0fb;
-  text-align: center;
-}
-.social div:hover{
-  background-color: rgba(255,255,255,0.47);
-}
-.social .fb{
-  margin-left: 25px;
-}
-.social i{
-  margin-right: 4px;
-}
+<div class="bg-login mx-0 py-5">
+    <div class="wrapper">
+    <div class="row">
+        <div class="col-10 col-sm-8 col-md-6 col-lg-4 offset-1 offset-sm-2 offset-md-3 offset-lg-4">
+            <div class="card mt-2">
+            <div class="card-body">
+                @if(session()->has('succes'))
+                <div class="alert alert-success">{{session()->get('succes')}}</div>
+                @endif
+                @if(session()->has('error'))
+                <div class="alert alert-danger">{{session()->get('error')}}</div>
+                @endif
+            <form action="{{ route('login') }}" method="post" class="form-product">
+                    @method('post')
+                    @csrf
+                    <div class="text-center">
+                       <!-- <img src="{{asset('/adminlte/logo-oni.png')}}" alt="Logo" class="logo text-center"/>-->
+                        <img src="{{asset('/adminlte/logo-oni.png')}}" alt="Logo" class="logo text-center"/>
+                    </div>
+                    <h2 class="mb-3 text-center text-success" style="font-style: italic">Outils de pilotage de l'ONI </h2>
 
-    </style>
-</head>
-<body>
-    <div class="background">
-        <div class="shape"></div>
-        <div class="shape"></div>
+                    <div class="divider p-divider"></div>
+
+                    <div class="form-group mb-1">
+                        <label class="col-form-label" for="email">Email</label>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Entrer votre email" value="{{old('email')}}">
+                        @error('email')
+                            <div class="text text-danger">{{$message}}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group mb-2">
+                        <label class="col-form-label" for="password">Mot de passe</label>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Entrer votre mot de passe" value="">
+                        @error('password')
+                            <div class="text text-danger">{{$message}}</div>
+                        @enderror
+                    </div>
+                    <button type="submit" class="btn btn-success">Se connecter</button>
+                </form>
+                </div>
+            </div>
+        </div>
+</div>
     </div>
-    <form method="POST" action="{{ route('login') }}">
-    @csrf
-    <center><h4>Outil de Pilotage de l'ONI</h4>
-    <img loading="lazy" width="120" height="120" src="{{ asset('adminlte/logo-oni.png') }}" alt="CEFORE"></center>
+</div>
 
-        <label for="username">Email</label>
-        <input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username">
-
-        <label for="password">Mot de Passe</label>
-        <input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password">
-        <br>
-        <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        {{ __('Mot de Passe Oublié?') }}
-        </a>
-        <center><input type="submit" class="button" value="Se Connecter"></center>
-        <!-- <button>Se Connecter</button> -->
-        
-    </form>
-</body>
-</html>
+@endsection

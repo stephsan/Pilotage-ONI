@@ -524,7 +524,7 @@ a.sidebar-title:focus {
     margin: 0;
     padding-top: 12px;
     padding-bottom: 6px;
-    background: rgba(0, 0, 0, 0.15);
+    
     opacity: .5;
     -webkit-transition: opacity .25s ease-out;
     transition: opacity .25s ease-out;

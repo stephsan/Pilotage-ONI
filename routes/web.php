@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ParametreController;
 use App\Http\Controllers\ValeurController;
 use App\Http\Controllers\CentreCollecteController;
@@ -14,8 +15,8 @@ use App\Http\Controllers\RecetteQuittanceController;
 use App\Http\Controllers\RecetteController;
 use App\Http\Controllers\EntiteController;
 use App\Http\Controllers\RegistreController;
-
-
+use App\Http\Controllers\StatistiqueController;
+use App\Http\Controllers\TacheController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,7 +41,14 @@ Route::resource("formulaire_prod", FormulaireController::class);
 Route::resource("centreCollecte", CentreCollecteController::class);
 Route::resource("centreTraitement", CentreTraitementController::class);
 Route::resource("recette_quittance", RecetteQuittanceController::class);
-Route::resource("statistique", StatistiqueController::class);
+// Route::resource("statistique", StatistiqueController::class);
+Route::resource('tache', TacheController::class);
+Route::get('/getById/tache', [TacheController::class, 'getById'])->name("tache.getById");
+Route::get('/viewById/tache', [TacheController::class, 'viewById'])->name("tache.viewById");
+
+Route::get('/changeStatus/tache', [TacheController::class, 'changeStatus'])->name("tache.changeStatus");
+
+Route::post('/modifier/tache', [TacheController::class, 'modifier'])->name("tache.modifier");
 
 Route::get('/value', [ValeurController::class, 'selection'])->name("valeur.selection");
 Route::post('/modifier/c-collecte', [CentreCollecteController::class, 'modifier'])->name("centreCollecte.modifier");
@@ -73,6 +81,14 @@ Route::post('/modifier/entite', [EntiteController::class, 'modifier'])->name("en
 Route::resource("registre", RegistreController::class);
 Route::get('/getById/registre', [RegistreController::class, 'getById'])->name("registre.getById");
 Route::post('/modifier/registre', [RegistreController::class, 'modifier'])->name("registre.modifier");
+Route::get('/rapport/journalier/', [RegistreController::class, 'rapport_journalier'])->name("registre.rapport_journalier");
+Route::post('/rapport/journalierByDate/', [RegistreController::class, 'rapport_journalier_by_date'])->name("registre.rapport_journalier_bydate");
+Route::post('store/sortie/formulaire/',[FormulaireController::class, 'store_formulaire_sortie'])->name("formulaire.sortie");
+Route::get('recette/par/antenne',  [DashboardController::class, 'recette_par_antenne'] )->name("recette.antenne");
+Route::get('prod_cnib/par/antenne',  [DashboardController::class, 'carte_imprime_par_antenne'] )->name("production.antenne");
+Route::get('formulaire/par/antenne',  [DashboardController::class, 'formulaire_par_antenne'] )->name("formulaire.antenne");
+
+
 
 
 
@@ -86,7 +102,5 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('backend.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dash_principal'])->name('dashboard');
 });

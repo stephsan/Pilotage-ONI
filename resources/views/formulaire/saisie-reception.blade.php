@@ -41,10 +41,14 @@
                         @if(!$formulaire->quittance)
                             <button  data-toggle="modal" onclick="edit_formulaire({{ $formulaire->id }});"  data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default" data-target="#update-formulaire" ><i class="fa fa-edit"></i></a>
                         @endif
+                        
                     @endcan
                     @can('quittance.create',Auth::user())
                         @if(return_nbre_quittance_recette($formulaire->id) == 0)
                             <button data-toggle="modal" onclick="edit_formulaire({{ $formulaire->id }});"  data-toggle="tooltip" title="Convertir en quittance recette" class="btn btn-xs btn-default" data-target="#create-recette" ><i class="fa fa-edit"></i></a>
+                        @endif
+                        @if(return_nbre_quittance_recette($formulaire->id) != 0 && $formulaire->nbre_carte_sortie==null )
+                            <button data-toggle="modal" onclick="edit_formulaire({{ $formulaire->id }});"  data-toggle="tooltip" title="Enregistrer la sortie du lot" class="btn btn-xs btn-default" data-target="#sortie-de-lot" ><i class="fa fa-edit"></i></a>
                         @endif
                     @endcan
                         @can('role.delete',Auth::user())
@@ -78,7 +82,72 @@
 @endsection
 @section('modalSection')
 
-
+<div class="modal fade" id="sortie-de-lot">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Enregistrer la sortie du lot</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="form-validation" method="POST"  action="{{ route('formulaire.sortie') }}" class="form-horizontal form-bordered" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <input type="hidden" id="formulaire_sortie" name="formulaire_prod">
+                {{-- <input type="hidden" id='facture_date_de_validation' name="facture_date_de_validation" value="{{ $facture->date_de_validation }}"> --}} 
+                <input id="ccd_q" type="hidden" class="form-control" name="premier_serie"  placeholder="1er numero de la serie" required autofocus>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
+                            <label class="control-label" for="libelle">Numero de lot<span class="text-danger">*</span></label>
+                            <input id="numero_lot_s" type="text" class="form-control" name="premier_serie"  placeholder="1er numero de la serie" required autofocus disabled>    
+                            </div>
+                    </div>
+                    <div class="col-md-6" >
+                        <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
+                            <label class=" control-label" for="libelle">CCD concerné<span class="text-danger">*</span></label>
+                            <input id="ccd_libelle_sortie" type="text" class="form-control" name="ccd_concernee"  placeholder="1er numero de la serie" required autofocus disabled>    
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="col-md-6" >
+                            <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
+                                <label class=" control-label" for="libelle">Nombre de formulaire<span class="text-danger">*</span></label>
+                                <input id="nbre_formulaire_sortie" type="number" class="form-control" name="nombre_formulaire_sortie" disabled required autofocus>    
+                                    @if ($errors->has('nombre_formulaire'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('nombre_formulaire') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group{{ $errors->has('nombre_carte_sortie') ? ' has-error' : '' }}">
+                                <label class=" control-label" for="libelle">Nombre de carte sortie<span class="text-danger">*</span></label>
+                                <input id="nombre_carte_sortie" type="text" class="form-control" name="nombre_carte_sortie"  placeholder="Entrer le nombre de carte sortie" required autofocus>    
+                                    @if ($errors->has('nombre_carte_sortie'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('nombre_carte_sortie') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                        </div> 
+               
+                </div>
+        
+        
+        <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success"><i class="fa fa-arrow-right"></i> Enregistrer</button>
+        </div> 
+        </form>
+        </div>
+      
+      </div>
+    </div>
+</div>
 <div class="modal fade" id="create-recette">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
@@ -89,6 +158,7 @@
           </button>
         </div>
         <div class="modal-body">
+            <p id="message_rejet" style="background-color: #d56d72; display:none; text-align:center">Le nombre de rejet ne peut pas depasser le nombre de formulaire</p>
             <form id="form-validation" method="POST"  action="{{ route('recette_quittance.store') }}" class="form-horizontal form-bordered" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input type="hidden" id="formulaire_prod" name="formulaire_prod">
@@ -213,23 +283,10 @@
                     </div>
             </div>
         </div> 
-        <div class="row">
-            {{-- <div class="col-md-6" >
-                <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
-                    <label class=" control-label" for="libelle">Date<span class="text-danger">*</span></label>
-                    <input id="date_u" type="text"  class="form-control date_affecte" name="date"  required autofocus>    
-                        @if ($errors->has('date'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('date') }}</strong>
-                        </span>
-                        @endif
-                    </div>
-            </div> --}}
-             
-        </div> 
+        
         <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-            <button type="submit" class="btn btn-success"><i class="fa fa-arrow-right"></i> Enregistrer</button>
+            <button type="submit" class="btn btn-success" id="button_quittance"><i class="fa fa-arrow-right"></i> Enregistrer</button>
         </div> 
         </form>
         </div>
@@ -497,6 +554,14 @@ function setMontantRecette(){
         var valeur_formulaire= $('#valeur_form_q').val()
         var nbre_formulaire= $('#nbre_formulaire_q').val()
         var nbre_rejet= $('#nbre_rejet_q').val()
+        if(nbre_rejet > nbre_formulaire ){
+            $('#message_rejet').show();
+            $('#button_quittance').prop("disabled", true);
+        }
+        else{
+            $('#message_rejet').hide();
+            $('#button_quittance').prop("disabled", false);
+        }
         var montant= (parseInt(nbre_formulaire) - parseInt(nbre_rejet))*2500;
         $('#montant_q').val(montant);
     }
@@ -505,6 +570,14 @@ function setMontantRecette(){
                 $("#formulaire_recu").val(id);
                 $('#numero_oni_q').val('');
                 $('#date_siege_q').val('');
+                $('#ccd_libelle').val('');
+                $('#ccd_libelle_sortie').val('');
+                $('#nbre_formulaire_q').val('');
+                $('#nbre_formulaire_sortie').val('');
+                $('#formulaire_prod').val('');
+                $('#numero_lot_s').val('');
+                $('#nbre_rejet_q').val('');
+                $('#montant_q').val('');
             var url = "{{ route('formulaire_recu.getById') }}";
                 $.ajax({
                     url: url,
@@ -526,9 +599,13 @@ function setMontantRecette(){
                         $("#premier_serie_q").val(data.premier_serie);
                         $("#dernier_serie_q").val(data.dernier_serie);
                         $("#nbre_formulaire_q").val(data.nombre);
+                        $("#nbre_formulaire_sortie").val(data.nombre);
                         $("#formulaire_prod").val(id);
+                        $("#formulaire_sortie").val(id);
                         $("#numero_lot_q").val(data.numero_lot);
+                        $("#numero_lot_s").val(data.numero_lot);
                         $("#ccd_libelle").val(data.centre_collecte_libelle);
+                        $("#ccd_libelle_sortie").val(data.centre_collecte_libelle);
                     }
                 });
         }

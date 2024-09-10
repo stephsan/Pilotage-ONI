@@ -255,7 +255,7 @@
             <div class="col-md-6" >
                 <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
                     <label class=" control-label" for="libelle">Date d'émission<span class="text-danger">*</span></label>
-                    <input id="name" type="text"  class="form-control date_affecte" name="date_emission"  required autofocus>    
+                    <input id="date_emission" type="text"  class="form-control date_affecte" name="date_emission"  required autofocus>    
                         @if ($errors->has('date_affecte'))
                         <span class="help-block">
                             <strong>{{ $errors->first('date_affecte') }}</strong>
@@ -266,7 +266,7 @@
             <div class="col-md-6" >
                 <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
                     <label class=" control-label" for="libelle">Date de l'affectation<span class="text-danger">*</span></label>
-                    <input id="name" type="text"  class="form-control date_affecte" name="date_demission"  required autofocus>    
+                    <input id="create-centre" type="text"  class="form-control date_affecte" name="date_affecte"  required autofocus>    
                         @if ($errors->has('date_affecte'))
                         <span class="help-block">
                             <strong>{{ $errors->first('date_affecte') }}</strong>

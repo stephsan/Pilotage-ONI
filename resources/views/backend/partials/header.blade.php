@@ -7,10 +7,11 @@
 
   <!-- Google Font: Source Sans Pro -->
 
- <link href="{{asset('backend/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+ {{-- <link href="{{asset('backend/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet"> --}}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  
+  <link rel="stylesheet" href="{{asset('/css/main.css')}}"> 
+  {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> --}}
   <link rel="stylesheet" href="{{asset('adminlte/plugins/fontawesome-free/css/all.min.css')}}">
   <link rel="stylesheet" href="{{asset('adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
   <link rel="stylesheet" href="{{asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
@@ -31,19 +32,24 @@
   <!-- JQVMap -->
   <link rel="stylesheet" href="{{asset('adminlte/plugins/jqvmap/jqvmap.min.css')}}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{asset('adminlte/dist/css/adminlte.min.css')}}">
+  <link rel="stylesheet" href="{{asset('adminlte/dist/css/adminlte.css')}}">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{asset('adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{{asset('adminlte/plugins/daterangepicker/daterangepicker.css')}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{asset('adminlte/plugins/summernote/summernote-bs4.min.css')}}">
-
+  <link rel="stylesheet" href="{{asset('/css/plugins.css')}}">
   <!-- For Backend -->
   <link rel="stylesheet" href="{{asset('adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{asset('adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{asset('adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
- 
+  {{-- <link rel="stylesheet" href="{{asset('/css/plugins.css')}}"> --}}
+   
+  <link rel="stylesheet" href="{{asset('/css/datepicker.css')}}"> 
+  <link href="{{asset('backend/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+    {{-- <link rel="stylesheet" href=
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"> --}}
 
   <!-- End Backend -->
 </head>
@@ -112,7 +118,8 @@
     <!-- Brand Logo -->
 
     <a href="{{route('dashboard')}}"  style="width: 250px;">
-      <img src="{{asset('/adminlte/logo-oni.png')}}" width="250" height="200" alt="ONI Logo" class="brand-image">
+      <center>Pilotage - ONI</center> 
+      {{-- <img src="{{asset('/adminlte/logo-oni.png')}}" width="250" height="200" alt="ONI Logo" class="brand-image"> --}}
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -124,7 +131,7 @@
         </div>
       </div>
       <!-- SidebarSearch Form -->
-      <div class="form-inline">
+      {{-- <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
           <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
@@ -133,7 +140,7 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> --}}
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
@@ -142,12 +149,13 @@
               <p>Tableau De Bord</p>
             </a>            
           </li>
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a href="{{route('dashboard')}}" class="nav-link @yield("dashboard")">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Tableau De Bord</p>
             </a>            
-          </li>
+          </li> --}}
+          @can('quittance.lister', Auth::user()) 
           <li class="nav-item @yield("formulaire")">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -181,6 +189,7 @@
                 </li>
             @endcan
               <li class="nav-item @yield('administration-role')">
+              
                 <a href="{{ route('formulaire.etat') }}" class="nav-link @yield("recap")">
                         <i class="nav-icon fa fa-check-square"></i>
                         <p>Recap</p>
@@ -189,6 +198,7 @@
                                          
             </ul>            
           </li> 
+        @endcan
         @can('recette.view', Auth::user())                   
           <li class="nav-item @yield("recette")">
             <a href="#" class="nav-link">
@@ -222,6 +232,32 @@
             </ul>            
           </li> 
           @endcan 
+          <li class="nav-item @yield("tache")">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>Suivi des taches
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+              <a href="{{ route('tache.index') }}" class="nav-link @yield("tache_encours")">
+                      <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                      <p>Taches en cours</p>
+                    </a>
+              </li>                       
+            </ul> 
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+              <a href="{{ route('registre.rapport_journalier') }}" class="nav-link @yield("registre")">
+                      <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                      <p>Taches finalisées</p>
+                    </a>
+              </li>
+                                         
+            </ul> 
+                    
+          </li> 
           <li class="nav-item @yield("statistique")">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -235,11 +271,21 @@
                       <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
                       <p>Registre Journalier</p>
                     </a>
+              </li>                       
+            </ul> 
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+              <a href="{{ route('registre.rapport_journalier') }}" class="nav-link @yield("registre")">
+                      <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                      <p>Rapport journalier</p>
+                    </a>
               </li>
                                          
-            </ul>            
+            </ul> 
+                    
           </li>      
-          <li class="nav-item @yield("administration")" >
+          @can('user.create', Auth::user()) 
+            <li class="nav-item @yield("administration")" >
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
@@ -328,7 +374,7 @@
               </li> --}}
           </li>          
         
-          
+          @endcan
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

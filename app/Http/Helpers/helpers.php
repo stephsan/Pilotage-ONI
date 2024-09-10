@@ -3,8 +3,9 @@
 use App\Models\User;
 use App\Models\Valeur;
 use App\Models\Recette;
+use App\Models\Tache;
 use App\Models\FormulaireRecu;
-
+use Carbon\Carbon;
 Use App\Models\RecetteQuittance;
 Use App\Models\Formulaire;
 
@@ -78,7 +79,11 @@ if (!function_exists('getlibelle')) {
         
 
         if(!function_exists('return_region_infos')){
+
             function return_region_infos($region_id){
+                $startOfYear = Carbon::now()->startOfYear();
+                // Récupérer la date de la fin de l'année en cours
+                $endOfYear = Carbon::now()->endOfYear();
                 $ctids= Valeur::find($region_id)->ctids;
                 $detail_region=[];
                 $ctid_ids=[];
@@ -87,9 +92,8 @@ if (!function_exists('getlibelle')) {
                     $ctid_ids[]=$ctid->id;
                     }
                     $formulaires= Formulaire::whereIn('centre_traitement_id',$ctid_ids)->whereBetween('formulaires.date_fourniture', ['2024-01-01', '2024-12-31'])->get();
-                    $recette_quittances= RecetteQuittance::whereIn('centre_traitement_id',$ctid_ids)->whereBetween('recette_quittances.created_at', ['2024-01-01', '2024-12-31'])->get();
-                    $formulaire_recu= FormulaireRecu::whereIn('centre_traitement_id',$ctid_ids)->whereBetween('formulaire_recus.created_at', ['2024-01-01', '2024-12-31'])->get();
-
+                    $recette_quittances= RecetteQuittance::whereIn('centre_traitement_id',$ctid_ids)->whereBetween('recette_quittances.created_at', [$startOfYear, $endOfYear])->get();
+                    $formulaire_recu= FormulaireRecu::whereIn('centre_traitement_id',$ctid_ids)->whereBetween('formulaire_recus.created_at', [$startOfYear, $endOfYear])->get();
                     $restant = $formulaires->sum('nombre') - $formulaire_recu->sum('nbre_formulaire');
                     $detail_region= array('region'=>$region_id, 'montant_recette_quittance'=>$recette_quittances->sum('montant'), 'nombre_formulaire_emis'=>$formulaires->sum('nombre'), 'nombre_formulaire_saisies'=>$formulaire_recu->sum('nbre_formulaire') , 'nombre_formulaire_recette'=>$recette_quittances->sum('nbre_formulaire'),  'nbre_formulaire_rejete'=>$recette_quittances->sum('nbre_rejet') , 'nbre_formulaire_restant'=> $restant);
                 }
@@ -122,7 +126,33 @@ if (!function_exists('getlibelle')) {
             }
             
         }
-
+        if(!function_exists('tache_en_retard')){
+            function tache_en_retard($tache_id)
+            {
+                $today = Carbon::now();
+               $tache= Tache::find($tache_id);
+               if($tache->deadline < $today){
+                        return true;
+               }else{
+                return  false;
+               }
+              
+            }
+            
+        }
+        if(!function_exists('return_role_adequat')){
+            function return_role_adequat($id_role){
+               $liste_roles= Auth::user()->roles;
+                foreach($liste_roles as $role)
+                {
+                    if($role->id==$id_role){
+                        return true;
+                    }
+                }
+                    return false;
+        
+            }
+        }
 
         if(!function_exists('get_month_french')){
             function get_month_french($mois){

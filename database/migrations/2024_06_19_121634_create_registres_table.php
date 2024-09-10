@@ -35,7 +35,6 @@ return new class extends Migration
             $table->integer('stock_de_teslin')->nullable();
             $table->integer('stock_de_tamine_imprime')->nullable();
 
-            
             $table->integer('nbre_de_carte_disponible')->nullable(); //vip nombre carte
             $table->integer('nbre_de_carte_restitue')->nullable(); //vip nombre carte
 
@@ -59,7 +58,7 @@ return new class extends Migration
             $table->integer('nbre_dossier_rejete')->nullable(); //Enquete investigation nombre carte
             $table->integer('nbre_dossier_en_instance')->nullable(); //Enquete investigation nombre carte
            
-            $table->integer('observation')->nullable();
+            $table->text('observation')->nullable();
             $table->date('date_effet');
             $table->integer('statut');
             $table->integer('creer_par');

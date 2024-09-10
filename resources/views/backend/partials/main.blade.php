@@ -24,8 +24,8 @@
     </section>
 </div>
 <footer class="main-footer">
-  <strong>Copyrights &copy;2024 <a href="https://adminlte.io">ONI Burkina Faso</a>.</strong>
-  Tous droits reservés.
+ <center><strong> Tous droits reservés 2024</a></strong>
+  ONI Burkina Faso.</center> 
   <div class="float-right d-none d-sm-inline-block">
     <b></b> 
   </div>
@@ -38,4 +38,5 @@
 <!-- /.control-sidebar -->
 @yield('modalSection')
 @include('backend.partials.footer')
+@yield('add_script')
 

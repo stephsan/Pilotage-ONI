@@ -19,6 +19,23 @@ class FormulaireController extends Controller
      {
          $this->middleware('auth');
      }
+
+    private function verifier_la_reception_de_formulaire($ccd,$operation, $nbre_de_formulaire_renseigne,$idform){
+        
+        $ccd=CentreCollecte::find($ccd);
+        $ctid=$ccd->CTID;
+        $formulaire_affectes_aux_ctid= $ctid->formulaires->sum('nombre');
+        $nombre_de_formulaire_receptionne_ccd_du_ctid= $ctid->formulaire_recus->sum('nbre_formulaire');
+        if($operation=='creation'){
+            $nbre_formulaire_restant_au_ctid= $formulaire_affectes_aux_ctid - $nombre_de_formulaire_receptionne_ccd_du_ctid;
+         }
+         else{
+             $formulaire=FormulaireRecu::find($idform);
+                
+             $nbre_formulaire_restant_au_ctid= $formulaire_affectes_aux_ctid + $formulaire->nbre_formulaire - $nombre_de_formulaire_receptionne_ccd_du_ctid;
+         }
+         return $result=$nbre_formulaire_restant_au_ctid - $nbre_de_formulaire_renseigne;
+    }
     public function index()
     {
         $formulaires=Formulaire::all();
@@ -128,6 +145,8 @@ class FormulaireController extends Controller
     public function save_formulaire_recus(Request $request)
     {
        $ccd=CentreCollecte::find($request->ccd);
+       $result= $this->verifier_la_reception_de_formulaire($request->ccd,'creation', $request->nombre_formulaire,null);
+     if($result >0 || $result ==0){
         FormulaireRecu::create([
             'nbre_formulaire'=>$request->nombre_formulaire,
             'centre_traitement_id'=>$ccd->ctid->id,
@@ -141,6 +160,21 @@ class FormulaireController extends Controller
         ]);
         return redirect(route('formulaire_recu.liste'))->with('success','Lot enregistré avec success!');
     }
+    else{
+        return redirect()->back()->with('error','Ce lot ne peut pas etre receptionné consultez le recap!');
+    }
+        
+    }
+    public function store_formulaire_sortie(Request $request)
+    {
+        $today = today(); 
+       $form=FormulaireRecu::find($request->formulaire_prod);
+       $form->update([
+            'nbre_carte_sortie'=>$request->nombre_carte_sortie,
+            'date_sortie'=>$today,
+        ]);
+        return redirect( route('formulaire_recu.liste'))->with('success','sortie du lot enregistrée avec success!');
+    }
     public function getFormulaire_recusById(Request $request)
     {
         $formulaire=FormulaireRecu::find($request->id);
@@ -151,6 +185,8 @@ class FormulaireController extends Controller
     {
         $ccd=CentreCollecte::find($request->ccd);
         $formulaire=FormulaireRecu::find($request->formulaire_recu);
+        $result= $this->verifier_la_reception_de_formulaire($request->ccd,'modification', $request->nombre_formulaire,$request->formulaire_recu);
+        if($result >0 || $result ==0){
         $formulaire->update([
             'nbre_formulaire'=>$request->nombre_formulaire,
             'centre_traitement_id'=>$ccd->ctid->id,
@@ -160,6 +196,9 @@ class FormulaireController extends Controller
             'dernier_serie'=>$request->dernier_serie,
         ]);
              return redirect( route('formulaire_recu.liste'))->with('success','Lot modifié avec success!');
+    }else{
+        return redirect()->back()->with('error','Modification du lot a échoué ! verifiez le recap');
+    }
     }
     public function verifier_saisie(Request $request)
         {
@@ -167,17 +206,15 @@ class FormulaireController extends Controller
             $ccd=CentreCollecte::find($request->ccd);
             $ctid=$ccd->CTID;
             $formulaire_affectes_aux_ctid= $ctid->formulaires->sum('nombre');
-            $nombre_de_quittance_saisie_ccd_du_ctid= $ctid->recette_quittances->sum('nbre_formulaire');
+            $nombre_de_formulaire_receptionne_ccd_du_ctid= $ctid->formulaire_recus->sum('nbre_formulaire');
             //dd($nombre_de_quittance_saisie_ccd_du_ctid);
             if($request->type_operation=='creation'){
-               $nbre_formulaire_restant_au_ctid= $formulaire_affectes_aux_ctid - $nombre_de_quittance_saisie_ccd_du_ctid;
+               $nbre_formulaire_restant_au_ctid= $formulaire_affectes_aux_ctid - $nombre_de_formulaire_receptionne_ccd_du_ctid;
             }
             else{
                 $formulaire=FormulaireRecu::find($request->element_modified);
-                   
-                $nbre_formulaire_restant_au_ctid= $formulaire_affectes_aux_ctid + $formulaire->nbre_formulaire - $nombre_de_quittance_saisie_ccd_du_ctid;
+                $nbre_formulaire_restant_au_ctid= $formulaire_affectes_aux_ctid + $formulaire->nbre_formulaire - $nombre_de_formulaire_receptionne_ccd_du_ctid;
             }
-
                 return $result=$nbre_formulaire_restant_au_ctid - $nbre_de_formulaire_renseigne;
 
         }

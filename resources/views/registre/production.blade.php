@@ -280,7 +280,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Ajouter une nouvelle entité</h4>
+          <h4 class="modal-title">Registre</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -329,7 +329,11 @@
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('eff_absent') ? ' has-error' : '' }}">
                                 <label class=" control-label" for="eff_absent">Effectif absent<span class="text-danger">*</span></label>
-                                <input id="eff_absent" type="number"  class="form-control" name="eff_absent" min="0" placeholder="Entrer effectif absent" required autofocus>    
+                                <select id="example-chosen-multiple" name="absents[]" class="select-chosen" data-placeholder="Selectionner les absents" style="width: 250px;" multiple>
+                                   @foreach ($users as $user )
+                                         <option value="{{ $user->id }}"> {{ $user->matricule  }} - {{ $user->name  }} {{ $user->prenom  }} </option>
+                                   @endforeach
+                                </select>
                                     @if ($errors->has('eff_absent'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('eff_absent') }}</strong>

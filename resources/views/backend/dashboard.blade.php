@@ -1,206 +1,378 @@
-@extends('backend.partials.main')
-@section('dashboard', 'active')
-@section('content')
-<div class="block-title">
-                    <center><h2><strong>Tableau de Board</strong></h2></center>
-                    
-</div>
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3>150</h3>
+@extends('layouts.dashboard')
+@section('dash_content')
 
-                <p>Recettes</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="#" class="small-box-footer">Details <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                <p>Formulaires</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="#" class="small-box-footer">Details <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>44</h3>
-
-                <p>Taches</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="#" class="small-box-footer">Details <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>65</h3>
-
-                <p>Statistiques</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-              <a href="#" class="small-box-footer">Details <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-        </div>
-        <!-- /.row -->
-        <!-- Main row -->
-        
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
-    </section>
     <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Browser Usage</h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
+      <div class="card-header border-0">
+        <h3 class="card-title"> Statistique Production suivant le registre journalier </center></h3>
+       
+        <div class="card-tools">
+          <a href="#" class="btn btn-tool btn-sm">
+            <i class="fas fa-download"></i>
+          </a>
+          <a href="#" class="btn btn-tool btn-sm">
+            <i class="fas fa-bars"></i>
+          </a>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-7">
+                  <p style="margin-left: 10px;">CNIB Imprimées :</p>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-8">
-                    <div class="chart-responsive">
-                      <canvas id="pieChart" height="300"></canvas>
-                    </div>
-                    <!-- ./chart-responsive -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-md-4">
-                    <ul class="chart-legend clearfix">
-                      <li><i class="far fa-circle text-danger"></i> Chrome</li>
-                      <li><i class="far fa-circle text-success"></i> IE</li>
-                      <li><i class="far fa-circle text-warning"></i> FireFox</li>
-                      <li><i class="far fa-circle text-info"></i> Safari</li>
-                      <li><i class="far fa-circle text-primary"></i> Opera</li>
-                      <li><i class="far fa-circle text-secondary"></i> Navigator</li>
-                    </ul>
-                  </div>
-                  <!-- /.col -->
-                </div>
-                <!-- /.row -->
+              <div class="col-md-5">
+                  {{ $nombre_de_carte_produits->sum('nbre_carte_imprime') }}
               </div>
-              <!-- /.card-body -->
-              <div class="card-footer p-0">
-                <ul class="nav nav-pills flex-column">
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      United States of America
-                      <span class="float-right text-danger">
-                        <i class="fas fa-arrow-down text-sm"></i>
-                        12%</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      India
-                      <span class="float-right text-success">
-                        <i class="fas fa-arrow-up text-sm"></i> 4%
-                      </span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      China
-                      <span class="float-right text-warning">
-                        <i class="fas fa-arrow-left text-sm"></i> 0%
-                      </span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <!-- /.footer -->
+           </div>
+           <div class="row">
+      
+            <div class="col-md-7">
+                <p style="margin-left: 10px;">Nombre de cartes Endomagées :</p>
             </div>
-            <!-- /.card -->
-    <div class="card">                           
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
-                  <thead>
-                  <tr style="background-color:#0b9e44; color:white">
-                    <th>N°</th>
-                    <th>Numero Demande</th>
-                    <th>Promoteur</th>
-                    <th>Statut</th>
-                    <th>Nom Commercial</th> 
-                    <th>Date Création</th>            
-                    <th>Actions</th>                
-                    <th>Activité Principale</th>
-                    <th>Objet Social</th>
-                    <th>CEFORE</th>
-                    
-                    <th>Date Paiement</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  
-                  <tr>
-                    <td>i</td>
-                    <td>Test0</td>
-                    <td>test1</td>
-                    <td>test2</td>
-                    <td>test3</td> 
-                    <td>test4</td>                  
-                    <td><a href="#" class="btn btn-sm btn-success" style="background:#3393FF" title="Afficher les détais"> <i class="fa fa-eye"></i></a></td>
-                    <td>test5</td>
-                    <td>test6</td>
-                    <td>test7</td>                   
-                    <td>test8</td>
-                  </tr>
-            
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>N°</th>
-                    <th>Numero Demande</th>
-                    <th>Promoteur</th>
-                    <th>Statut</th>
-                    <th>Nom Commercial</th>
-                    <th>Date Création</th>             
-                    <th>Actions</th> 
-                    <th>Activité Principale</th>
-                    <th>Objet Social</th>
-                    <th>CEFORE</th>
-                    
-                    <th>Date Paiement</th>
-                  </tr>
-                  </tfoot>
-                </table>
-              </div>
-              <!-- /.card-body -->
+            <div class="col-md-5">
+                {{ $nombre_de_carte_produits->sum('nbre_carte_endomage') }}
+            </div>
+         </div>
+         <div class="row">
+          <div class="col-md-7">
+              <p style="margin-left: 10px;">Nombre de demande en instance :</p>
+          </div>
+          <div class="col-md-5">
+              {{ $nombre_de_carte_produits->sum('nbre_demande_en_instance') }}
+          </div>
+       </div>
+       <div class="row">
+        <div class="col-md-7">
+            <p style="margin-left: 10px;">Nombre de carte transmises :</p>
+        </div>
+        <div class="col-md-5">
+            {{ $nombre_de_carte_produits->sum('nbre_carte_transmise') }}
+        </div>
+     </div>
+        </div>
+         <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-7">
+                <p style="margin-left: 10px;">Passeport ord. produits :</p>
+            </div>
+            <div class="col-md-5">
+                {{ $nombre_de_passport_produits->sum('nbre_passport_ordi_produit') }}
+            </div>
+         </div>
+         <div class="row">
+          <div class="col-md-7">
+              <p style="margin-left: 10px;">Passeport ord. réjétés :</p>
+          </div>
+          <div class="col-md-5">
+              {{ $nombre_de_passport_produits->sum('nbre_passport_ordinaire_rejete') }}
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-7">
+              <p style="margin-left: 10px;">Passeport ord. vierge restant :</p>
+          </div>
+          <div class="col-md-5">
+              {{ $nombre_de_passport_produits->sum('nbre_passport_ord_vierge_restant') }}
+          </div>
+       </div> 
+       <div class="row">
+        <div class="col-md-7">
+            <p style="margin-left: 10px;">Passeport refugié produits :</p>
+        </div>
+        <div class="col-md-5">
+            {{ $nombre_de_passport_produits->sum('nbre_passport_refugie_produit') }}
+        </div>
+     </div>
+         </div>
+      </div>
+      
     </div>
+
+
+<div class="row">
+  
+  <div class="col-md-12">
+    <div class="card">                           
+      <div class="card-header">
+        <h3 class="card-title">Liste des taches en instances</h3>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+          <thead>
+          <tr style="background-color:#0b9e44; color:white">
+            <th>N°</th>
+            <th>Titre</th>
+            <th>Date d'affectation</th>
+            <th>Date limite</th>
+            <th>Responsable</th>
+            <th>Action</th> 
+          </tr>
+          </thead>
+          <tbody>
+          @foreach ($tache_encours as $tache_encour)
+            <tr 
+              @if (tache_en_retard($tache_encour->id) == true)
+                style='color:red'
+              @endif
+            >
+              <td>1</td>
+              <td>{{ $tache_encour->intitule }}</td>
+              <td>{{ format_date($tache_encour->date_daffectation) }}</td>
+              <td>{{ format_date($tache_encour->deadline) }}</td> 
+              <td>{{ $tache_encour->porteur->name }} {{ $tache_encour->porteur->prenom }} - {{ $tache_encour->porteur->fonction }}</td>                  
+              <td>
+                <button  data-toggle="modal" onclick="view_task({{ $tache_encour->id }});"  data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default" data-target="#view-task" ><i class="fa fa-seach"></i></a>
+                <a href="#" class="btn btn-sm btn-success" style="background:#3393FF" title="Afficher les détais"> <i class="fa fa-eye"></i></a></td>
+              
+            </tr>
+          @endforeach
+          </tbody>
+          <tfoot>
+          <tr>
+            <th>N°</th>
+            <th>Titre</th>
+            <th>Date d'affectation</th>
+            <th>Date limite</th>
+            <th>Responsable</th>
+            <th>Action</th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    </div>
+</div>
+
+<div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Recette par antenne</h3>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-10" id="bck1">
+                
+                <!-- ./chart-responsive -->
+              </div>
+              <!-- /.col -->
+              
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.card-body -->
+          
+          <!-- /.footer -->
+        </div>
+    
   @endsection
+  @section('modal_section')
+  <div class="modal fade" id="view-task">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Details sur la tache</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p>Titre de la tache :</p>
+                    </div>
+                    <div class="col-md-8">
+                      <p id="titre"></p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                      <p>Description de la tache :</p>
+                  </div>
+                  <div class="col-md-8">
+                    <p id="description"></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                    <p>Porteur :</p>
+                </div>
+                <div class="col-md-8">
+                  <p id="porteur"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                  <p>Statut :</p>
+              </div>
+              <div class="col-md-8">
+                <p id="statut"></p>
+            </div>
+          </div>
+            <div class="row">
+              <div class="col-md-4">
+                  <p>Tache affectée le :</p>
+              </div>
+              <div class="col-md-8">
+                <p id="date_daffectation"></p>
+            </div>
+          </div>
+            <div class="row">
+              <div class="col-md-4">
+                  <p>Date limite de traitement :</p>
+              </div>
+              <div class="col-md-8" style='color:red'>
+                <p id="date_limite_de_traitement"></p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  @endsection
+  @section('add_script')
+  <script>
+    function view_task(id){
+                var id=id;
+                //alert(id)
+                $("#titre").val(id);
+                $("#porteur").val('');
+                $("#description").val('');
+                $("#statut").val('');
+                $("#date_daffectation").val('');
+            var url = "{{ route('tache.viewById') }}";
+                $.ajax({
+                    url: url,
+                    type:'GET',
+                    dataType:'json',
+                    data: {id: id} ,
+                    error:function(){alert('error');},
+                    success:function(data){
+                        console.log(data)
+                        $('#titre').text(data.titre);
+                        $('#description').text(data.description);
+                        $('#porteur').text(data.porteur);
+                        $('#date_limite_de_traitement').text(data.deadline);
+                        $('#date_daffectation').text(data.date_daffectation);
+                        $('#statut').text(data.statut);
+                        
+                    }
+                });
+        }
+  </script>
+  <script language = "javaScript">
+    var url = "{{ route('recette.antenne') }}"
+      $.ajax({
+                 url: url,
+                 type: 'GET',
+                 dataType: 'json',
+                 error:function(data){
+                    if (xhr.status == 401) {
+                       
+                    }
+                },
+                 success: function (donnee) {
+                        var cnib= [];
+                        var dao= [];
+                        var reversement= [];
+                        var autre= [];
+                        var donnch= new Array();
+                        var antennes = new Array();
+                    for(var i=0; i<donnee.length; i++)
+                    {
+                        cnib.push(parseInt(donnee[i].cnib));
+                        dao.push(parseInt(donnee[i].dao));
+                        reversement.push(parseInt(donnee[i].reversement));
+                        autre.push(parseInt(donnee[i].autre));
+
+                    }
+                    donnch.push({
+                                name: 'cnib',
+                                data:cnib,
+                                color:'green',
+                                dataLabels: {
+                                enabled: true,
+                                }
+                            })
+                  donnch.push({
+                                name: 'dao',
+                                data:dao,
+                                color:'blue',
+                                dataLabels: {
+                                enabled: true,
+                                }
+                            })
+                donnch.push({
+                                name: 'reversement',
+                                data:reversement,
+                                color:'yellow',
+                                dataLabels: {
+                                enabled: true,
+                                }
+                            })
+                donnch.push({
+                                name: 'autre',
+                                data:autre,
+                                color:'red',
+                                dataLabels: {
+                                enabled: true,
+                                }
+                            })
+                    console.log(donnch);
+                    for(var i=0; i<donnee.length; i++)
+                            {
+                              antennes[i] = donnee[i].antenne
+                            }
+                    console.log(antennes)
+                    Highcharts.chart('bck1', {
+                        chart: {
+                                    type: 'column'
+                                },
+                        xAxis: {
+                                 categories: antennes
+                            },
+                        title: {
+                            text: 'Recette par antenne'
+                        },
+                        credits : {
+                            enabled: false
+                        },
+                       
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                    showInLegend: true
+                            }
+                        },
+                        series:donnch
+                    });
+
+}
+
+});      
+</script>
+@endsection

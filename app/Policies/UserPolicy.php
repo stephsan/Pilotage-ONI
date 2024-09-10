@@ -29,7 +29,7 @@ class UserPolicy
      */
     public function view(User $user)
     {
-        return $this->getPermission($user,1);
+        return $this->getPermission($user,2);
     }
 
     /**

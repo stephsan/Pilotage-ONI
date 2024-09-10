@@ -1904,7 +1904,7 @@ MIT License
     cursor: default;
 }
 .chosen-container .chosen-results li.highlighted {
-    background-color: #1bbae1;
+    background-color: #228e3a;
     color: #fff;
 }
 .chosen-container .chosen-results li.no-results {
@@ -1967,8 +1967,8 @@ MIT License
     margin: 7px 0 6px 5px;
     padding: 2px 20px 2px 5px;
     background: #f9fafc;
-    border: 1px solid #1bbae1;
-    background-color: #1bbae1;
+    border: 1px solid #228e3a;
+    background-color: #228e3a;
     color: #ffffff;
     font-weight: 600;
     font-size: 12px;
@@ -2159,10 +2159,10 @@ http://www.apache.org/licenses/LICENSE-2.0
 =================================================================
 */
 
-.datepicker {
+/* .datepicker {
     padding: 5px;
     direction: ltr;
-    z-index: 1051 !important;
+    z-index: 1600 !important;
 }
 .datepicker-inline {
     width: 220px;
@@ -2521,7 +2521,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 .datepicker thead tr:first-child th.cw {
     cursor: default;
     background-color: transparent;
-}
+} */
 
 /*
 =================================================================

@@ -7,6 +7,7 @@ use App\Policies\ValeurPolicy;
 use App\Policies\UserPolicy;
 use App\Policies\FormulairePolicy;
 use App\Policies\RecettePolicy;
+use App\Policies\TachePolicy;
 
  use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -41,9 +42,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('quittance.create', [RecettePolicy::class, 'creer_quittance_recette'] );
         Gate::define('formulaire.receptionner', [FormulairePolicy::class, 'receptionne'] );
         Gate::define('formulaire.update_reception', [FormulairePolicy::class, 'update_reception'] );
-
-
-
+        Gate::define('tache.create', [TachePolicy::class, 'create'] );
+        Gate::define('tache.view', [TachePolicy::class, 'view'] );
     }
   
 }

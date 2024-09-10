@@ -38,7 +38,9 @@
 <script src="{{asset('adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('js/plugins.js')}}"></script>
+<script src="{{asset('js/app.js')}}"></script>
 <script src="{{asset('adminlte/dist/js/adminlte.js')}}"></script>
+<script src="{{asset('js/autre/highcharts.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
@@ -63,21 +65,90 @@
 <script src="{{asset('adminlte/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
 <script src="{{asset('adminlte/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{asset('adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+<script src=
+"https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
+        integrity=
+"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+        crossorigin="anonymous">
+    </script>
+    <script src=
+"https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" 
+        integrity=
+"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
+        crossorigin="anonymous">
+    </script>
+    <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+    </script>
 <script type="text/javascript">
   $('.flash-message').delay(3000).slideUp(350);
   </script>
-
+<script>
+  $(function() {
+    $("body").delegate(".datepicker", "focusin", function(){
+        $(this).datepicker();
+    });
+});
+</script>
+<script>
+  jQuery(function($){
+	$.datepicker.regional['fr'] = {
+		closeText: 'Fermer',
+		prevText: '&#x3c;Préc',
+		nextText: 'Suiv&#x3e;',
+		currentText: 'Aujourd\'hui',
+		monthNames: ['Janvier','Fevrier','Mars','Avril','Mai','Juin',
+		'Juillet','Aout','Septembre','Octobre','Novembre','Decembre'],
+		monthNamesShort: ['Jan','Fev','Mar','Avr','Mai','Jun',
+		'Jul','Aou','Sep','Oct','Nov','Dec'],
+		dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+		dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+		dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
+		weekHeader: 'Sm',
+		dateFormat: 'dd-mm-yy',
+		firstDay: 1,
+		isRTL: false,
+		showMonthAfterYear: false,
+		yearSuffix: '',
+		minDate: 0,
+		maxDate: '+12M +0D',
+		numberOfMonths: 2,
+		showButtonPanel: true
+		};
+	$.datepicker.setDefaults($.datepicker.regional['fr']);
+});
+</script>
 <!-- For Datatable -->
 <script>
         $(document).ready(function(){
         $('.date_affecte').datepicker({
             changeMonth: true,
             changeYear: true,
+            monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+            monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
             endDate: new Date(),
             format: 'dd-mm-yyyy',
         }).val();
         });
+        $(document).ready(function(){
+        $('.date_tache').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            startDate: new Date(),
+            format: 'dd-mm-yyyy',
+            monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+            monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+          
+        });
+        });
 </script>
+
 <script>
 
 function verifierSaisiequittance(ccd, nombre_formulaire, type_operation, idModification){

@@ -11,7 +11,7 @@ use App\Models\Recette;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 class RecetteQuittanceController extends Controller
 {
     /**
@@ -29,16 +29,19 @@ class RecetteQuittanceController extends Controller
        return view('recette_quittance.index', compact('recette_quittances','ccds'));
     }
     public function etat_recap(){
-                $saisie_annee_encours= DB::table('centre_traitements')
+        $startOfYear = Carbon::now()->startOfYear();
+         // Récupérer la date de la fin de l'année en cours
+         $endOfYear = Carbon::now()->endOfYear();
+                  $saisie_annee_encours= DB::table('centre_traitements')
                          ->join('formulaires',function($join){
-                            $join->on('formulaires.centre_traitement_id','=','centre_traitements.id')
-                            ->whereBetween('centre_traitements.created_at', ['2024-01-01', '2024-12-31']);
+                            $join->on('formulaires.centre_traitement_id','=','centre_traitements.id');
                         })
+                            ->whereBetween('centre_traitements.created_at', [$startOfYear, $endOfYear])
                             ->join('valeurs','centre_traitements.region_id','=','valeurs.id')
+                     
                             ->groupBy('valeurs.id')
                             ->select('valeurs.id as region_id','valeurs.libelle as region')
                             ->get();
-                        //dd($saisie_annee_encours);
                             $ctids= CentreTraitement::all();
                             $regions= Valeur::where('parametre_id',1)->get();
         return view('recette_quittance.recap', compact('ctids','saisie_annee_encours'));

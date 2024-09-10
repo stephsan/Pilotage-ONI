@@ -31,6 +31,8 @@ class User extends Authenticatable
         'Telephone',
         'antenne_id',
         'entite_id',
+        'fonction',
+        'matricule',
     ];
 
     /**

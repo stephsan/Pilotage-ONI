@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Antenne;
+use App\Models\Valeur;
 use App\Models\Entite;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,9 +21,10 @@ class UserController extends Controller
     public function create(){
         if (Auth::user()) {
             $roles= Role::all();   
+            $fonctions= Valeur::where('parametre_id',8)->get();  
             $antennes= Antenne::all();
             $entites= Entite::all();            
-            return view("user.create", compact("roles", "antennes",'entites'));
+            return view("user.create", compact('fonctions',"roles", "antennes",'entites'));
          }
     }
 
@@ -34,6 +36,8 @@ class UserController extends Controller
             ]);
            $user= User::create([
                 "name"=>$request['nom'],
+                "matricule"=>$request['matricule'],
+                "fonction"=>$request['fonction'],
                 "email"=>$request['email'],
                 'Prenom'=> $request ['prenom'],                
                 'Telephone'=> $request ['telephone'],
@@ -51,9 +55,10 @@ class UserController extends Controller
     {
     if (Auth::user()) {
             $roles= Role::all();
-            $entites= Entite::all();    
+            $entites= Entite::all();  
+            $fonctions= Valeur::where('parametre_id',8)->get();    
             $antennes= Antenne::all();             
-        return view("user.update",compact(["user","roles",'antennes','entites']));
+        return view("user.update",compact(['fonctions',"user","roles",'antennes','entites']));
      }
      else{
          flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
@@ -71,6 +76,8 @@ class UserController extends Controller
         $user->update([
             "name"=>$request['nom'],
             "email"=>$request['email'],
+            "matricule"=>$request['matricule'],
+            "fonction"=>$request['fonction'],
             'Prenom'=> $request ['prenom'],
             'antenne_id'=> $request ['antenne'], 
             'entite_id'=> $request ['entite'],               

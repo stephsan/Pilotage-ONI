@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('entite_id')->nullable();
+            $table->string('intitule');
         });
     }
 

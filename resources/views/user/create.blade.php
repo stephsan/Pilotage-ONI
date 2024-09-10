@@ -14,7 +14,23 @@
                         <fieldset>
                             <legend><i class="fa fa-angle-right"></i> Informations personnelles</legend>
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                                <label class="col-md-4 control-label" for="val_username">Matricule<span class="text-danger">*</span></label>
+                                
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                            <input id="matricule" type="text" class="form-control" name="matricule" value="{{ old('matricule') }}" required autofocus>
+                                        <span class="input-group-addon"><i class="gi gi-user"></i></span>
+                                    </div>
+                                    @if ($errors->has('matricule'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('matricule') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label" for="val_username">Nom<span class="text-danger">*</span></label>
+                                
                                 <div class="col-md-6">
                                     <div class="input-group">
                                             <input id="nome" type="text" class="form-control" name="nom" value="{{ old('nom') }}" required autofocus>
@@ -27,6 +43,7 @@
                                     @endif
                                 </div>
                             </div>
+
                             <div class="form-group{{ $errors->has('prename') ? ' has-error' : '' }}">
                                     <label class="col-md-4 control-label" for="prenom">Prenom <span class="text-danger">*</span></label>
                                     <div class="col-md-6">
@@ -91,6 +108,20 @@
                                                     <option value="{{ $entite->id  }}" {{ old('entite') == $entite->id ? 'selected' : '' }}>{{ $entite->intitule }}</option>
                                             @endforeach
                                         </select>
+                                </div>
+                            </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" for="region">Fonction: <span class="text-success">*</span></label>
+                                            <select class="form-control select2" style="width: 100%;" id="antenne_u" name="fonction" data-placeholder="Selectionner la fonction de l'utilisateur .." >
+                                                <option></option>
+                                                <option value="null">Aucune</option>
+                                                @foreach ($fonctions as $fonction )
+                                                        <option value="{{ $fonction->id  }}" {{ old('fonction') == $fonction->id ? 'selected' : '' }}
+                                                           >{{ $fonction->libelle }}</option>
+                                                @endforeach
+                                            </select>
+                                    </div>
                                 </div>
                             </div>
                         </fieldset>
