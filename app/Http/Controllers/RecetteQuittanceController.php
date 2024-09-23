@@ -44,7 +44,71 @@ class RecetteQuittanceController extends Controller
                             ->get();
                             $ctids= CentreTraitement::all();
                             $regions= Valeur::where('parametre_id',1)->get();
-        return view('recette_quittance.recap', compact('ctids','saisie_annee_encours'));
+     $formulaire_par_antenne = DB::table('centre_traitements')
+                            ->join ('formulaire_recus',function($join){
+                                $join->on('formulaire_recus.centre_traitement_id','=','centre_traitements.id');
+                            })
+                            ->leftjoin('recette_quittances',function($join){
+                                $join->on('recette_quittances.formulaire_recus_id','=','formulaire_recus.id');
+                            })
+                            ->leftjoin('antennes',function($join){
+                                $join->on('centre_traitements.antenne_id','=','antennes.id');
+                            })
+                            //->join('antennes','centre_traitements.antenne_id','=','antennes.id')
+                            ->whereBetween('formulaire_recus.created_at', [$startOfYear, $endOfYear])
+                            ->groupBy('antennes.id')
+                            ->select('antennes.nom_de_lantenne as antenne',
+                                    'antennes.id as antenne_id',
+                                    DB::raw("sum(recette_quittances.nbre_formulaire) as nb_form_quittance"),
+                                    DB::raw("sum(recette_quittances.montant) as montant"),
+                                    DB::raw("sum(formulaire_recus.nbre_formulaire) as formulaire_recu"),
+                                    DB::raw("sum(formulaire_recus.nbre_carte_sortie) as carte_sortie"))
+                            ->get();
+    $formulaire_emis_par_antenne = DB::table('centre_traitements')
+                            ->leftjoin('formulaires',function($join){
+                                $join->on('formulaires.centre_traitement_id','=','centre_traitements.id')
+                                    ->where('formulaires.centre_traitement_id', '!=', null);
+                                
+                            })
+                            ->leftjoin('antennes',function($join){
+                                $join->on('centre_traitements.antenne_id','=','antennes.id');
+                            })
+                            //->join('antennes','centre_traitements.antenne_id','=','antennes.id')
+                            ->whereBetween('formulaires.created_at', [$startOfYear, $endOfYear])
+                            ->groupBy('antennes.id')
+                            ->select('antennes.nom_de_lantenne as antenne',
+                                    'antennes.id as antenne_id',
+                                     DB::raw("sum(formulaires.nombre) as nb_form_emis"),
+                                    )
+                            ->get();
+                            
+            foreach($formulaire_emis_par_antenne as $antenne){
+                $form_emis=$formulaire_emis_par_antenne->where('antenne_id', $antenne->antenne_id)->first()->nb_form_emis;
+                if($formulaire_par_antenne->where('antenne_id',$antenne->antenne_id)->first()){
+                    $form_recus=$formulaire_par_antenne->where('antenne_id',$antenne->antenne_id)->first()->formulaire_recu;
+                    $nb_form_quittance=$formulaire_par_antenne->where('antenne_id',$antenne->antenne_id)->first()->nb_form_quittance;
+                    $montant=$formulaire_par_antenne->where('antenne_id',$antenne->antenne_id)->first()->montant;
+                    $carte_sortie=$formulaire_par_antenne->where('antenne_id',$antenne->antenne_id)->first()->carte_sortie;
+                }else{
+                    $form_recus= 0;
+                    $carte_sortie= 0;
+                    $nb_form_quittance= 0;
+                    $montant= 0;
+                    
+                }
+                $ligne=array(
+                    'antenne'=>$antenne->antenne,
+                    'formulaire_emis' =>$antenne->nb_form_emis,
+                    'formulaire_recu_prod'=> $form_recus,
+                    'carte_sortie'=> $carte_sortie,
+                    'formulaire_restants'=> $antenne->nb_form_emis - $form_recus,
+                    'nb_form_quittance'=> $nb_form_quittance,
+                    'montant'=> $montant,
+                    'formulaire_restants'=> $antenne->nb_form_emis - $form_recus,
+                 );
+                 $tab_antenne[]=$ligne;
+            }
+        return view('recette_quittance.recap', compact('tab_antenne','ctids','saisie_annee_encours'));
     }
 
     /**

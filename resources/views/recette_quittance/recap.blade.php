@@ -33,15 +33,15 @@
             </tr>
             </thead>
             <tbody>
-                @foreach($saisie_annee_encours as $saisie_annee_encour)
+                @foreach($tab_antenne as $saisie_annee_encour)
             <tr>
-                <td>{{$saisie_annee_encour->region}} </td>
-                <td> <center>{{return_region_infos($saisie_annee_encour->region_id)['nombre_formulaire_emis']}}</center></td>
-                <td><center>{{return_region_infos($saisie_annee_encour->region_id)['nombre_formulaire_saisies']}}</center></td>
-                <td> <center>{{return_region_infos($saisie_annee_encour->region_id)['nombre_formulaire_recette']}}</center></td>
-                <td> <center>{{return_region_infos($saisie_annee_encour->region_id)['nbre_formulaire_rejete']}}</center></td>
-                <td> <center>{{return_region_infos( $saisie_annee_encour->region_id)['nbre_formulaire_restant']}}</center></td>
-                <td><center>{{format_prix(return_region_infos($saisie_annee_encour->region_id)['montant_recette_quittance'])}}</center></td>
+                <td>{{$saisie_annee_encour['antenne']}} </td>
+                <td> <center>{{$saisie_annee_encour['formulaire_emis']}}</center></td>
+                <td><center>{{$saisie_annee_encour['formulaire_recu_prod']}}</center></td>
+                <td> <center>{{$saisie_annee_encour['nb_form_quittance']}}</center></td>
+                <td> <center>{{$saisie_annee_encour['montant']}}</center></td>
+                <td> <center>{{$saisie_annee_encour['formulaire_restants']}}</center></td>
+                <td><center>{{format_prix($saisie_annee_encour['montant'])}}</center></td>
                 <td>
                    
                 </td>
@@ -66,16 +66,20 @@
                     <th>Numero</th>
                     <th>Region</th>
                     <th>CTID</th>
-                    <th>Formulaires recus</th>
-                    <th>Formulaires traités</th>
+                    <th>Formulaires émis</th>
+                    <th>Formulaires enregistrés a la reception des lots</th>
                     <th>Recette</th>
                     <th>Formulaires restant</th>
+                    <th>Seuil Min</th>
                     <th>Actions</th>
                 </tr>
         </thead>
         <tbody>
             @foreach($ctids as $ctid)
-                <tr>
+                <tr @if($ctid->seuil_min > $ctid->formulaires->sum('nombre') - $ctid->formulaire_recus->sum('nbre_formulaire'))
+                         style='color:red';
+                    @endif
+                    >
                     <td>{{$ctid->id}}</td>
                     <td>{{$ctid->region->libelle}}</td>
                     <td>{{$ctid->libelle}}</td>
@@ -83,6 +87,7 @@
                     <td> {{$ctid->formulaire_recus->sum('nbre_formulaire')}}</td>
                     <td>{{format_prix($ctid->recette_quittances->sum('montant'))}}</td>
                     <td>{{$ctid->formulaires->sum('nombre') - $ctid->formulaire_recus->sum('nbre_formulaire')}}</td>
+                    <td>{{$ctid->seuil_min}}</td>
                     <td class="text-center">
                             <div class="btn-group">
                                 <a href="{{ route('detail.quittance_ccd',$ctid) }}"   title="details sur les CCDs" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a> 
@@ -102,6 +107,7 @@
                 <th>Formulaires traités</th>
                 <th>Recette</th>
                 <th>Formulaires restant</th>
+                <th>Seuil Min</th>
                 <th>Actions</th>
             </tr>
         </tfoot>

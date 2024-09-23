@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Registre;
 use App\Models\User;
 use App\Models\RegistreAbsent;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -81,7 +81,7 @@ class RegistreController extends Controller
         $registre=  Registre::create([
             'effectif_theorique'=>$request->eff_theorique,
             'effectif_present'=>$request->eff_present,
-            'effectif_absent'=>1,
+            'effectif_absent'=>count($request->absents),
             'effectif_conge'=>$request->eff_conge,
             'effectif_mission'=>$request->eff_mission,
             'effectif_malade'=>$request->eff_maladie,
@@ -144,45 +144,50 @@ class RegistreController extends Controller
         return redirect()->route('registre.index')->with('success','Registre enregistré avec success !!');
     }
     public function rapport_journalier(Request $request){
-        $date = '2024-07-02';
+        $today= Carbon::now();
+       // $date = '2024-07-02';
        // $date = strtotime($dateString);
         $rapport_productions= DB::table('registres')
         ->join('antennes',function($join){
            $join->on('registres.antenne_id','=','antennes.id');
             //->where(DB::raw("DATE(date_effet) = '".date('Y-m-d')."'"));
        })
+           ->whereDate('date_effet',$today)
            ->groupBy('antennes.id')
            ->select('antennes.nom_de_lantenne as antenne', DB::raw("sum(nbre_demande_saisie) as carte_emise"), DB::raw("sum(nbre_carte_endomage) as carte_detruite"), DB::raw("sum(nbre_carte_endomage) as carte_detruite"), DB::raw("sum(nbre_demande_saisie) - sum(nbre_carte_imprime) as carte_en_instance"))
            ->get();
-        $rapport_reception_exception= Registre::where('entite_id',env('ID_SERVICE_RECEPTION'))->whereDate('date_effet',$date)->first();
-        $rapport_passeport= Registre::where('entite_id',env('ID_SERVICE_PASSEPORT'))->whereDate('date_effet',$date)->first();
-        $rapport_tri= Registre::where('entite_id',env('ID_SECTION_TRI'))->whereDate('date_effet',$date)->first();
-        $rapport_biometrie= Registre::where('entite_id',env('ID_SERVICE_BIOMETRIE'))->whereDate('date_effet',$date)->first();
-        $rapport_vip= Registre::where('entite_id',env('ID_SERVICE_VIP'))->whereDate('date_effet',$date)->first();
-        $rapport_enquete= Registre::where('entite_id',env('ID_SERVICE_ENQUETE'))->whereDate('date_effet',$date)->first();
+        $rapport_reception_exception= Registre::where('entite_id',env('ID_SERVICE_RECEPTION'))->whereDate('date_effet',$today)->first();
+        $rapport_passeport= Registre::where('entite_id',env('ID_SERVICE_PASSEPORT'))->whereDate('date_effet',$today)->first();
+        $rapport_tri= Registre::where('entite_id',env('ID_SECTION_TRI'))->whereDate('date_effet',$today)->first();
+        $rapport_biometrie= Registre::where('entite_id',env('ID_SERVICE_BIOMETRIE'))->whereDate('date_effet',$today)->first();
+        $rapport_vip= Registre::where('entite_id',env('ID_SERVICE_VIP'))->whereDate('date_effet',$today)->first();
+        $rapport_enquete= Registre::where('entite_id',env('ID_SERVICE_ENQUETE'))->whereDate('date_effet',$today)->first();
 
       //dd($rapport_reception_exceptions);
         return view('registre.rapportJounalier', compact('rapport_tri','rapport_biometrie','rapport_vip','rapport_enquete','rapport_productions','rapport_reception_exception','rapport_passeport'));
     }
     public function rapport_journalier_by_date(Request $request){
        //dd($request->date_concernee);
-       $date_convert = strtotime($request->date_concernee);
-       $this->date_search = date('Y-m-d',$date_convert);
+       $date_convert_debut = strtotime($request->date_debut);
+       $date_convert_fin = strtotime($request->date_fin);
+
+       $this->date_debut = date('Y-m-d',$date_convert_debut);
+       $this->date_fin = date('Y-m-d',$date_convert_fin);
         //dd($this->date_search);
         $rapport_productions= DB::table('registres')
         ->join('antennes',function($join){
            $join->on('registres.antenne_id','=','antennes.id');
        })
-            ->where('registres.date_effet' , $this->date_search )
+            ->whereBetween('registres.date_effet',[$this->date_debut,  $this->date_fin] )
            ->groupBy('antennes.id')
            ->select('antennes.nom_de_lantenne as antenne', DB::raw("sum(nbre_demande_saisie) as carte_emise"), DB::raw("sum(nbre_carte_endomage) as carte_detruite"), DB::raw("sum(nbre_carte_endomage) as carte_detruite"), DB::raw("sum(nbre_demande_saisie) - sum(nbre_carte_imprime) as carte_en_instance"))
            ->get();
-        $rapport_reception_exception= Registre::where('entite_id',env('ID_SERVICE_RECEPTION'))->whereDate('date_effet',$this->date_search)->first();
-        $rapport_passeport= Registre::where('entite_id',env('ID_SERVICE_PASSEPORT'))->whereDate('date_effet',$this->date_search)->first();
-        $rapport_tri= Registre::where('entite_id',env('ID_SECTION_TRI'))->whereDate('date_effet',$this->date_search)->first();
-        $rapport_biometrie= Registre::where('entite_id',env('ID_SERVICE_BIOMETRIE'))->whereDate('date_effet',$this->date_search)->first();
-        $rapport_vip= Registre::where('entite_id',env('ID_SERVICE_VIP'))->whereDate('date_effet',$this->date_search)->first();
-        $rapport_enquete= Registre::where('entite_id',env('ID_SERVICE_ENQUETE'))->whereDate('date_effet',$this->date_search)->first();
+        $rapport_reception_exception= Registre::where('entite_id',env('ID_SERVICE_RECEPTION'))->whereBetween('registres.date_effet',[$this->date_debut,  $this->date_fin] )->first();
+        $rapport_passeport= Registre::where('entite_id',env('ID_SERVICE_PASSEPORT'))->whereBetween('registres.date_effet',[$this->date_debut,  $this->date_fin] )->first();
+        $rapport_tri= Registre::where('entite_id',env('ID_SECTION_TRI'))->whereBetween('registres.date_effet',[$this->date_debut,  $this->date_fin] )->first();
+        $rapport_biometrie= Registre::where('entite_id',env('ID_SERVICE_BIOMETRIE'))->whereBetween('registres.date_effet',[$this->date_debut,  $this->date_fin] )->first();
+        $rapport_vip= Registre::where('entite_id',env('ID_SERVICE_VIP'))->whereBetween('registres.date_effet',[$this->date_debut,  $this->date_fin] )->first();
+        $rapport_enquete= Registre::where('entite_id',env('ID_SERVICE_ENQUETE'))->whereBetween('registres.date_effet',[$this->date_debut,  $this->date_fin] )->first();
         return view('registre.rapportJounalier', compact('rapport_tri','rapport_biometrie','rapport_enquete','rapport_vip','rapport_productions','rapport_reception_exception','rapport_passeport'));
     }
     public function getById(Request $request)

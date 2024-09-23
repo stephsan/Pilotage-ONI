@@ -7,7 +7,7 @@
 
 <div class="card card-success col-md-12 col-md-offset-2">
     <button  data-toggle="modal" class="btn btn-success col-md-2" style="margin-bottom: 7px;" data-target="#create-centre"><span></span> Ajouter un CTID</button>
-
+    <button  data-toggle="modal" class="btn btn-success col-md-2" style="margin-bottom: 7px;" data-target="#create-centre"><span></span> Importer</button>
     <div class="card-header" style="margin-bottom: 10px;">
       <h3 class="card-title" >Liste des CTID</h3>
     </div>

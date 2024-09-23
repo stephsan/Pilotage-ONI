@@ -46,6 +46,12 @@ class FormulairePolicy
     {
         return $this->getPermission($user,11);
     }
+    public function recap_formulaire(User $user)
+    {
+        return $this->getPermission($user,22);
+    }
+
+    
     
 
     /**

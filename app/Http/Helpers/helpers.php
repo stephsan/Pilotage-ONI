@@ -91,7 +91,7 @@ if (!function_exists('getlibelle')) {
                 foreach($ctids as $ctid){
                     $ctid_ids[]=$ctid->id;
                     }
-                    $formulaires= Formulaire::whereIn('centre_traitement_id',$ctid_ids)->whereBetween('formulaires.date_fourniture', ['2024-01-01', '2024-12-31'])->get();
+                    $formulaires += Formulaire::whereIn('centre_traitement_id',$ctid_ids)->whereBetween('formulaires.date_fourniture', [$startOfYear, $endOfYear])->get();
                     $recette_quittances= RecetteQuittance::whereIn('centre_traitement_id',$ctid_ids)->whereBetween('recette_quittances.created_at', [$startOfYear, $endOfYear])->get();
                     $formulaire_recu= FormulaireRecu::whereIn('centre_traitement_id',$ctid_ids)->whereBetween('formulaire_recus.created_at', [$startOfYear, $endOfYear])->get();
                     $restant = $formulaires->sum('nombre') - $formulaire_recu->sum('nbre_formulaire');

@@ -125,7 +125,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group{{ $errors->has('nombre_carte_sortie') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="libelle">Nombre de carte sortie<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="libelle">Nombre de csarte sortie<span class="text-danger">*</span></label>
                                 <input id="nombre_carte_sortie" type="text" class="form-control" name="nombre_carte_sortie"  placeholder="Entrer le nombre de carte sortie" required autofocus>    
                                     @if ($errors->has('nombre_carte_sortie'))
                                     <span class="help-block">

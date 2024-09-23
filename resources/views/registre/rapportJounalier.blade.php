@@ -1,20 +1,33 @@
 @extends('backend.partials.main')
-@section('formulaire', 'menu-open')
-@section('saisie', 'active')
+@section('statistique', 'menu-open')
+@section('rapport', 'active')
 @section('content')
 <form action="{{ route('registre.rapport_journalier_bydate') }}" method="post">
 <div class="row">
     @csrf
   <div class="col-md-8">
-    <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
-      <label class=" control-label" for="libelle">Renseignez la date<span class="text-danger">*</span></label>
-      <input id="date_siege_u" type="text"  class="form-control date_affecte" name="date_concernee"  required autofocus>    
-          @if ($errors->has('date_concernee'))
-          <span class="help-block">
-              <strong>{{ $errors->first('date_concernee') }}</strong>
-          </span>
-          @endif
+    <div class="row">
+      <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }} col-md-6">
+        <label class=" control-label" for="libelle">Renseignez la date debut<span class="text-danger">*</span></label>
+        <input id="date_debut" type="text"  class="form-control date_affecte" name="date_debut"  required autofocus>    
+            @if ($errors->has('date_debut'))
+            <span class="help-block">
+                <strong>{{ $errors->first('date_debut') }}</strong>
+            </span>
+            @endif
+      </div>
+      <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }} col-md-6">
+        <label class=" control-label" for="libelle">Renseignez la date fin<span class="text-danger">*</span></label>
+        <input id="date_fin_u" type="text"  class="form-control date_affecte" name="date_fin"  required autofocus>    
+            @if ($errors->has('date_fin'))
+            <span class="help-block">
+                <strong>{{ $errors->first('date_fin') }}</strong>
+            </span>
+            @endif
+      </div>
     </div>
+   
+    
   </div>
   {{-- <div class="col-md-4">
     <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
@@ -130,11 +143,11 @@
                         <thead>
                           <tr>
                             <th>Passeports refugiés</th>
-                            <th>Paaseports emis</th>
-                            <th>Paaseports fautés</th>
-                            <th>Paaseports rejété</th>
-                            <th>Paaseports vierge restant</th>
-                            <th>Paaseports repris pour cau d'erreur</th>
+                            <th>Passeports emis</th>
+                            <th>Passeports fautés</th>
+                            <th>Passeports rejété</th>
+                            <th>Passeports vierge restant</th>
+                            <th>Passeports repris pour cau d'erreur</th>
                             <th>Observations</th>
                           </tr>
                         </thead>
@@ -165,6 +178,52 @@
                   </div>
                 </div>
             </div>
+            <div class="col-md-10">
+              <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Service Biométrie</h3>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body p-0">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Photos investiguées</th>
+                          <th>Photos Enrolées Manuellements</th>
+                          <th>Photos en attente de tirage</th>
+                          <th>Photos en attente d'investigation</th>
+                          <th>Photos a vérifier</th>
+                          <th>Photos enrolées manuellement</th>
+                          <th>Observations</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          @if ($rapport_biometrie)
+                          <tr>
+                        
+                              <td>{{ $rapport_biometrie->nbre_photo_investigues }}</td>
+                              <td>{{ $rapport_biometrie->nbre_photo_enrole_manuellement }}</td>
+                              <td>{{ $rapport_biometrie->nbre_photo_en_attente_de_tirage }}</td>
+                              <td>{{ $rapport_biometrie->nbre_photo_en_attente_dinvestigation }}</td>
+                              <td>{{ $rapport_biometrie->nbre_photo_enrole_manuellement }}</td>
+                              <td>{{ $rapport_biometrie->nbre_photos_a_verifier }}</td>
+                              <td>{{ $rapport_biometrie->observation }}</td>
+
+                     
+                          </tr>
+                          @else
+                              <tr> <td>Pas de données</td></tr>
+                             
+                          @endif
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                 
+                </div>
+              </div>
+          </div>
             <div class="row">
                 <div class="col-md-6">
                   <div class="card">

@@ -64,6 +64,12 @@ class RecettePolicy
     {
         return $this->getPermission($user,2);
     }
+    public function modifier_quittance_recette(User $user)
+    {
+        return $this->getPermission($user,17);
+    }
+  
+ 
     /**
      * Determine whether the user can delete the model.
      *
@@ -86,6 +92,10 @@ class RecettePolicy
     public function restore(User $user)
     {
         return $this->getPermission($user,3);
+    }
+    public function synthese(User $user)
+    {
+        return $this->getPermission($user,21);
     }
 
     /**

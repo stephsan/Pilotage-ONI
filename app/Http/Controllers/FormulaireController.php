@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Formulaire;
 use App\Models\Antenne;
+use Carbon\Carbon;
 use App\Models\FormulaireRecu;
 use App\Models\CentreTraitement;
 use App\Models\CentreCollecte;
@@ -129,9 +130,9 @@ class FormulaireController extends Controller
         //
     }
     public function liste_save_formulaire_recus()
-    {
-        //flash('My message');
-        $formulaires=FormulaireRecu::all();
+    {   $startOfThisYear = Carbon::now()->startOfYear();
+        $endOfThisYear = Carbon::now()->endOfYear();
+        $formulaires=FormulaireRecu::whereBetween('created_at',[$startOfThisYear,$endOfThisYear])->get();
         if(Auth::user()->antenne_id==100){
             //$antennes=Antenne::all();
             $ctids=CentreTraitement::all();

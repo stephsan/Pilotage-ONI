@@ -30,19 +30,35 @@
             <a href="{{ route('dashboard')}}?detail=formulaire_emise"  class="small-box-footer">Details <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
+    @if(return_role_adequat(env('ID_MANAGER_PRODUCTION')))
         <div class="col-lg-3 col-6">
           <!-- small box -->
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>{{ format_prix($recette_de_lannee_encours->sum('montant')) }}</h3>
-              <p>De recette pour cette annee</p>
+              <h3>{{ format_prix($statistique_cnib_du_mois_en_cours->sum('nbre_carte_imprime')) }}</h3>
+              <p>Carte imprimées au cours de ce mois</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="{{ route('dashboard')}}?detail=recette" class="small-box-footer">Details <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{ route('dashboard')}}?detail=statistique_du_mois" class="small-box-footer">Details <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
+    @elseif (return_role_adequat(env('ID_MANAGER_GENERAL_ROLE')))
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>{{ format_prix($recette_de_lannee_encours->sum('montant')) }}</h3>
+                <p>De recette pour cette annee</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+              <a href="{{ route('dashboard')}}?detail=recette" class="small-box-footer">Details <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+    @endif
         <!-- ./col -->
         <div class="col-lg-3 col-6">
           <!-- small box -->

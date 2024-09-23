@@ -143,19 +143,21 @@
       </div> --}}
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        @can('acceder_au_dashboard', Auth::user()) 
           <li class="nav-item">
             <a href="{{route('dashboard')}}" class="nav-link @yield("dashboard")">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Tableau De Bord</p>
             </a>            
           </li>
+        @endcan
           {{-- <li class="nav-item">
             <a href="{{route('dashboard')}}" class="nav-link @yield("dashboard")">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Tableau De Bord</p>
             </a>            
           </li> --}}
-          @can('quittance.lister', Auth::user()) 
+          @can('formulaire.recap', Auth::user()) 
           <li class="nav-item @yield("formulaire")">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -180,21 +182,15 @@
                     </a>
               </li>
             @endcan
-          @can('quittance.lister', Auth::user()) 
-              <li class="nav-item">
-                <a href="{{ route('recette_quittance.index') }}" class="nav-link @yield("saisie")">
-                        <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
-                        <p>Quittances recettes</p>
-                      </a>
-                </li>
+          @can('formulaire.recap', Auth::user()) 
+          <li class="nav-item @yield('administration-role')">
+            <a href="{{ route('formulaire.etat') }}" class="nav-link @yield("recap")">
+                    <i class="nav-icon fa fa-check-square"></i>
+                    <p>Recap formulaires</p>
+                  </a>
+            </li>
             @endcan
-              <li class="nav-item @yield('administration-role')">
               
-                <a href="{{ route('formulaire.etat') }}" class="nav-link @yield("recap")">
-                        <i class="nav-icon fa fa-check-square"></i>
-                        <p>Recap</p>
-                      </a>
-                </li>
                                          
             </ul>            
           </li> 
@@ -207,27 +203,38 @@
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+          
             <ul class="nav nav-treeview">
-           
+            @can('quittance.lister', Auth::user())  
+              <li class="nav-item">
+                <a href="{{ route('recette_quittance.index') }}" class="nav-link @yield("saisie")">
+                        <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                        <p>Quittances recettes</p>
+                      </a>
+                </li>
+            @endcan
+           @can('recette.view', Auth::user()) 
               <li class="nav-item">
               <a href="{{ route('recette.index') }}" class="nav-link @yield("recette-saisie")">
                       <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
                       <p>Saisie recette</p>
                     </a>
               </li>
-           
-              <li class="nav-item @yield('administration-role')">
+           @endcan
+           @can('recette.synthese', Auth::user())  
+           <li class="nav-item">
               <a href="{{ route('recette.synthese') }}" class="nav-link @yield("recette-synthese")">
                       <i class="nav-icon fa fa-check-square"></i>
-                      <p>Synthese</p>
+                      <p>Synthese recette</p>
                     </a>
               </li>
-              <li class="nav-item @yield('administration-role')">
+          @endcan
+              {{-- <li class="nav-item @yield('administration-role')">
                 <a href="{{ route('formulaire.etat') }}" class="nav-link @yield("recap")">
                         <i class="nav-icon fa fa-check-square"></i>
-                        <p>Recap</p>
+                        <p>Recap formulaires</p>
                       </a>
-                </li>
+                </li> --}}
                                          
             </ul>            
           </li> 
@@ -258,6 +265,7 @@
             </ul> 
                     
           </li> 
+    @can('acceder_au_registre',Auth::user())
           <li class="nav-item @yield("statistique")">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -265,25 +273,30 @@
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+      @can('acceder_au_registre',Auth::user())
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                <a href="{{ route('registre.index') }}" class="nav-link @yield("registre")">
+                        <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                        <p>Registre Journalier</p>
+                      </a>
+                </li>                       
+              </ul> 
+      @endcan
+          @can('acceder_a_la_synthese',Auth::user())
             <ul class="nav nav-treeview">
               <li class="nav-item">
-              <a href="{{ route('registre.index') }}" class="nav-link @yield("registre")">
-                      <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
-                      <p>Registre Journalier</p>
-                    </a>
-              </li>                       
-            </ul> 
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-              <a href="{{ route('registre.rapport_journalier') }}" class="nav-link @yield("registre")">
+              <a href="{{ route('registre.rapport_journalier') }}" class="nav-link @yield("rapport")">
                       <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
                       <p>Rapport journalier</p>
                     </a>
               </li>
                                          
             </ul> 
+           @endcan
                     
-          </li>      
+          </li>
+      @endcan      
           @can('user.create', Auth::user()) 
             <li class="nav-item @yield("administration")" >
             <a href="#" class="nav-link">
