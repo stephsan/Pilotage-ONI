@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Parametre;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class ParametreController extends Controller
 {
     public function __construct()
@@ -13,8 +13,13 @@ class ParametreController extends Controller
     }
     public function index()
     {
-        $parametres = Parametre::all();
-        return view('parametre.index', compact('parametres'));
+        if (Auth::user()->can('gerer_parametre')) { 
+            $parametres = Parametre::all();
+            return view('parametre.index', compact('parametres'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -24,8 +29,13 @@ class ParametreController extends Controller
      */
     public function create()
     {
-        $parametres = Parametre::all();
-        return view('parametre.create', compact('parametres'));
+        if (Auth::user()->can('gerer_parametre')) { 
+            $parametres = Parametre::all();
+            return view('parametre.create', compact('parametres'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -36,12 +46,17 @@ class ParametreController extends Controller
      */
     public function store(Request $request)
     {
+    if (Auth::user()->can('gerer_parametre')) { 
         Parametre::create([
           'parametre_id'=>$request->parent,
            'libelle'=>$request->libelle,
            'description'=>$request->description,
            ]);
            return redirect( route('parametre.index'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -63,8 +78,13 @@ class ParametreController extends Controller
      */
     public function edit(Parametre $parametre)
     {
-        $params = Parametre::all();
-        return view('parametre.edit', compact('parametre', 'params'));
+        if (Auth::user()->can('gerer_parametre')) { 
+            $params = Parametre::all();
+            return view('parametre.edit', compact('parametre', 'params'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -76,12 +96,17 @@ class ParametreController extends Controller
      */
     public function update(Request $request, Parametre $parametre)
     {
-        $parametre->libelle = $request->libelle;
-        $parametre->description = $request->description;
-        $parametre->parametre_id = $request->parent;
-        $parametre->save();
+        if (Auth::user()->can('gerer_parametre')) { 
+            $parametre->libelle = $request->libelle;
+            $parametre->description = $request->description;
+            $parametre->parametre_id = $request->parent;
+            $parametre->save();
         // Flashy::message('Parametre Supprimer avec succes');
         return redirect(route('parametre.index'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -92,7 +117,12 @@ class ParametreController extends Controller
      */
     public function destroy( $id)
     {
+    if (Auth::user()->can('gerer_parametre')) { 
         Parametre::destroy($id);
         return redirect( route('parametre.index'));
+    }
+    else{
+        return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+    }
     }
 }

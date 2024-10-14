@@ -40,9 +40,12 @@ class UserPolicy
      */
     public function create(User $user)
     {
+      //  return $this->getPermission($user,1);
+    }
+    public function gerer_user(User $user)
+    {
         return $this->getPermission($user,1);
     }
-
     /**
      * Determine whether the user can update the model.
      *
@@ -52,7 +55,7 @@ class UserPolicy
      */
     public function update(User $user)
     {
-        return $this->getPermission($user,2);
+        //return $this->getPermission($user;);
     }
 
     /**

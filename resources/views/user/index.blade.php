@@ -4,14 +4,16 @@
 @section('content')
         <div class="row">
                     <div class="card card-success col-md-12 col-md-offset-2">
+                        <a href="{{ route('user.create') }}" class="btn btn-success col-md-2" type="button" ><span><i class="fa fa-plus"></i></span> User</a>
+
                         <div class="card-header">
                           <h3 class="card-title">Liste des utilisateurs</h3>
                         </div>
-                        
-                        <a href="{{ route('user.create') }}" class="btn btn-block btn-success col-md-2 mt-2" type="button"><span><i class="fa fa-plus"></i></span>User</a>
+
+                        {{-- <a  class="btn btn-block btn-success col-md-2 mt-2" type="button"><span><i class="fa fa-plus"></i></span>User</a> --}}
                      
 <div class="table-responsive">
-<table class="table table-vcenter table-condensed table-bordered listepdf">
+<table id="example1" class="table table-bordered table-striped">
         <thead>
                 <tr>
                     <th>N°</th>

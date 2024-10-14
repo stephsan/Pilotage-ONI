@@ -156,13 +156,13 @@
                             @if ($rapport_passeport)
                             <tr>
                           
-                                <td>{{ $rapport_passeport->nbre_passport_refugie_produit }}</td>
-                                <td>{{ $rapport_passeport->nbre_passport_ordi_produit }}</td>
-                                <td>{{ $rapport_passeport->nbre_passport_ord_faute }}</td>
-                                <td>{{ $rapport_passeport->nbre_passport_ordinaire_rejete }}</td>
-                                <td>{{ $rapport_passeport->nbre_passport_ord_vierge_restant }}</td>
-                                <td>{{ $rapport_passeport->nbre_passport_ord_faute }}</td>
-                                <td>{{ $rapport_passeport->observation }}</td>
+                                <td>{{ $rapport_passeport->sum('nbre_passport_refugie_produit') }}</td>
+                                <td>{{ $rapport_passeport->sum('nbre_passport_ordi_produit') }}</td>
+                                <td>{{ $rapport_passeport->sum('nbre_passport_ord_faute') }}</td>
+                                <td>{{ $rapport_passeport->sum('nbre_passport_ordinaire_rejete') }}</td>
+                                <td>{{ $rapport_passeport->sum('nbre_passport_ord_vierge_restant') }}</td>
+                                <td>{{ $rapport_passeport->sum('nbre_passport_ord_faute') }}</td>
+                                {{-- <td>{{ $rapport_passeport->observation }}</td> --}}
 
                        
                             </tr>
@@ -202,13 +202,13 @@
                           @if ($rapport_biometrie)
                           <tr>
                         
-                              <td>{{ $rapport_biometrie->nbre_photo_investigues }}</td>
-                              <td>{{ $rapport_biometrie->nbre_photo_enrole_manuellement }}</td>
-                              <td>{{ $rapport_biometrie->nbre_photo_en_attente_de_tirage }}</td>
-                              <td>{{ $rapport_biometrie->nbre_photo_en_attente_dinvestigation }}</td>
-                              <td>{{ $rapport_biometrie->nbre_photo_enrole_manuellement }}</td>
-                              <td>{{ $rapport_biometrie->nbre_photos_a_verifier }}</td>
-                              <td>{{ $rapport_biometrie->observation }}</td>
+                              <td>{{ $rapport_biometrie->sum('nbre_photo_investigues') }}</td>
+                              <td>{{ $rapport_biometrie->sum('nbre_photo_enrole_manuellement') }}</td>
+                              <td>{{ $rapport_biometrie->sum('nbre_photo_en_attente_de_tirage') }}</td>
+                              <td>{{ $rapport_biometrie->sum('nbre_photo_en_attente_dinvestigation') }}</td>
+                              <td>{{ $rapport_biometrie->sum('nbre_photo_enrole_manuellement') }}</td>
+                              <td>{{ $rapport_biometrie->sum('nbre_photos_a_verifier') }}</td>
+                              <td></td>
 
                      
                           </tr>
@@ -296,6 +296,46 @@
                    
                   </div>
                 </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Rapports et Enquete</h3>
+                  </div>
+                  <div class="card-body p-0">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Nombre de dossiers recus</th>
+                          <th>Nombre de dossiers traités</th>
+                          <th>Nombre de dossiers transmis</th>
+                          <th>Nombre de dossiers rejetés</th>
+                          <th>Nombre de dossiers en instance</th>
+                          <th>Observations</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          @if ($rapport_enquete)
+                          <tr>
+                              <td>{{ $rapport_enquete->nbre_dossier_recu }}</td>
+                              <td>{{ $rapport_enquete->nbre_dossier_traite }}</td>
+                              <td>{{ $rapport_enquete->nbre_dossier_transmis }}</td>
+                              <td>{{ $rapport_enquete->nbre_dossier_rejete }}</td>
+                              <td>{{ $rapport_enquete->nbre_dossier_en_instance }}</td>
+                          </tr>
+                          @else
+                              <tr> <td>Pas de données</td></tr>
+                             
+                          @endif
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                 
+                </div>
+              </div>
             </div>
         </div>
 @endsection

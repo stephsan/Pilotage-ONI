@@ -35,7 +35,13 @@
                 </tr>
         </thead>
         <tbody>
+                @php
+                    $i=0;
+                @endphp
             @foreach($recettes as $recette)
+                    @php
+                    $i++;
+                @endphp
                 <tr @if($recette->statut==1)
                         style="color:green;"
                     @else
@@ -44,7 +50,7 @@
                     <td>
                         <input type="checkbox" name="" id="{{ $recette->id }}" value="{{ $recette->id }}">
                     </td>
-                    <td>{{$recette->numero}}</td>
+                    <td>{{$i}}</td>
                     <td>{{$recette->date_saisie}}</td>
                     <td>{{getlibelle($recette->type_recette)}}</td>
                     <td>{{format_prix($recette->montant)}}</td>

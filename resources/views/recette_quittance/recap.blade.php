@@ -26,7 +26,7 @@
               <th>Nbre Formulaires emis</th>
               <th>Nbre Formulaire recu en production</th>
               <th>Nbre Formulaire recu en recette</th>
-              <th>Nbre Formulaires rejeté</th>
+            
               <th>Nbre Formulaire restant</th>
               <th>Recette quittance</th>
             
@@ -39,7 +39,7 @@
                 <td> <center>{{$saisie_annee_encour['formulaire_emis']}}</center></td>
                 <td><center>{{$saisie_annee_encour['formulaire_recu_prod']}}</center></td>
                 <td> <center>{{$saisie_annee_encour['nb_form_quittance']}}</center></td>
-                <td> <center>{{$saisie_annee_encour['montant']}}</center></td>
+                {{-- <td> <center>{{$saisie_annee_encour['rejete']}}</center></td> --}}
                 <td> <center>{{$saisie_annee_encour['formulaire_restants']}}</center></td>
                 <td><center>{{format_prix($saisie_annee_encour['montant'])}}</center></td>
                 <td>

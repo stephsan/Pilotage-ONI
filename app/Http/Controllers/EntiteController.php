@@ -4,16 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Entite;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class EntiteController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+     public function __construct()
+     {
+         $this->middleware('auth');
+     }
     public function index()
     {
+    if (Auth::user()->can('gerer_entite')) { 
         $entites=Entite::all();
         return view('entite.index', compact('entites'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -29,11 +39,16 @@ class EntiteController extends Controller
      */
     public function store(Request $request)
     {
+    if (Auth::user()->can('gerer_entite')) { 
         Entite::create([
             'entite_id'=>$request->entite,
             'intitule'=>$request->libelle,
         ]);
        return redirect()->route('entite.index')->with('success','Entité enregistrée avec success !!');
+    }
+    else{
+        return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+    }
 
     }
     public function getById(Request $request)
@@ -44,12 +59,17 @@ class EntiteController extends Controller
     }
     public function modifier(Request $request)
     {
+        if (Auth::user()->can('gerer_entite')) { 
         $entite=Entite::find($request->entite_id);
         $entite->update([
              'entite_id'=>$request->entite_id,
              'intitule'=>$request->libelle,
              ]);
              return redirect( route('entite.index'))->with('success','Entité a été modifiée avec success !!');
+            }
+            else{
+                return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+            }
     }
 
     /**

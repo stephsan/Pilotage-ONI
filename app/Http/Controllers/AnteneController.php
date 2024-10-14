@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Antenne;
 use App\Models\Valeur;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class AnteneController extends Controller
 {
     /**
@@ -13,10 +13,14 @@ class AnteneController extends Controller
      */
     public function index()
     {
-    
+    if (Auth::user()->can('gerer_entite')) { 
         $antennes=Antenne::all();
         $regions=Valeur::where('parametre_id',1 )->get();
         return view('antenne.index', compact('antennes','regions'));
+    }
+    else{
+        return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+    }
     }
 
     /**
@@ -32,12 +36,17 @@ class AnteneController extends Controller
      */
     public function store(Request $request)
     {
+    if (Auth::user()->can('gerer_entite')) { 
         Antenne::create([
             'region_id'=>$request->region,
             'nom_de_lantenne'=>$request->libelle,
             'description'=>$request->description,
         ]);
         return redirect()->route('antenne.index');
+    }
+    else{
+        return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+    }
     }
     public function getById(Request $request)
     {
@@ -46,6 +55,7 @@ class AnteneController extends Controller
     }
     public function modifier(Request $request)
     {
+    if (Auth::user()->can('gerer_entite')) { 
         $antenne=Antenne::find($request->antenne_id);
         $antenne->update([
             'region_id'=>$request->region,
@@ -53,6 +63,10 @@ class AnteneController extends Controller
             'description'=>$request->description,
              ]);
              return redirect( route('antenne.index'));
+            }
+            else{
+                return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+            }
     }
 
     /**

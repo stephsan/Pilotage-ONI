@@ -77,9 +77,23 @@
 "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
         crossorigin="anonymous">
     </script>
-    <script src=
-"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
-    </script>
+
+
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
+<!-- Inclure Bootstrap Datepicker JS et CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+<!-- Inclure la traduction française -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <!-- Inclure Bootstrap CSS -->
+{{-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"> --}}
+
+<!-- Inclure jQuery -->
+
+
+
 <script type="text/javascript">
   $('.flash-message').delay(3000).slideUp(350);
   </script>
@@ -121,6 +135,7 @@
 <!-- For Datatable -->
 <script>
         $(document).ready(function(){
+         
         $('.date_affecte').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -131,6 +146,8 @@
             dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
             endDate: new Date(),
             format: 'dd-mm-yyyy',
+            language: 'fr',
+            autoclose: true
         }).val();
         });
         $(document).ready(function(){

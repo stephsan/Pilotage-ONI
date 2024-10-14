@@ -8,7 +8,7 @@ use App\Models\Valeur;
 use App\Models\Antenne;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class CentreTraitementController extends Controller
 {
     /**
@@ -20,12 +20,18 @@ class CentreTraitementController extends Controller
          $this->middleware('auth');
      }
     public function index()
-    {
+    { 
+    if (Auth::user()->can('gerer_entite')) { 
         $centres = CentreTraitement::all();
         $antennes= Antenne::all();
         $ccds = CentreCollecte::all();
         $regions=Valeur::where('parametre_id',1 )->get();
         return view('centreTraitement.index', compact('antennes','centres','regions','ccds'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
+        
     }
     public function select_ctids_byAntenne(Request $request){
               $ctids= CentreTraitement::where('antenne_id', $request->antenne)->get();  
@@ -81,6 +87,7 @@ public function select_antennes_byRegionId(Request $request){
      */
     public function store(Request $request)
     {
+    if (Auth::user()->can('gerer_entite')) { 
         $lastOne = DB::table('centre_traitements')->latest('id')->first();
         if($lastOne){
         $code_centre="CTID-00". $lastOne->id+1;}
@@ -98,6 +105,10 @@ public function select_antennes_byRegionId(Request $request){
              'description'=>$request->description,
         ]);
         return redirect( route('centreTraitement.index'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -109,6 +120,7 @@ public function select_antennes_byRegionId(Request $request){
     }
     public function modifier(Request $request)
     {
+        if (Auth::user()->can('gerer_entite')) { 
         $centre=CentreTraitement::find($request->centre_id);
         $centre->update([
              'region_id'=>$request->region,
@@ -120,6 +132,10 @@ public function select_antennes_byRegionId(Request $request){
              'seuil_min'=>$request->seuil_min,
              ]);
              return redirect( route('centreTraitement.index'));
+            }
+            else{
+                return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+            }
     }
     public function getById(Request $request)
     {
@@ -132,11 +148,16 @@ public function select_antennes_byRegionId(Request $request){
      */
     public function edit(CentreTraitement $centreTraitement)
     {
+     if (Auth::user()->can('gerer_entite')) { 
         $centre= $centreTraitement;
        // dd($centreTraitement->ccds());
         $regions=Valeur::where('parametre_id',1 )->get();
         $ccds=CentreCollecte::all();
         return view('centreTraitement.update', compact('centre','ccds','regions'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**

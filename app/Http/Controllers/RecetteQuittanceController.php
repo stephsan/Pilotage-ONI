@@ -25,7 +25,7 @@ class RecetteQuittanceController extends Controller
     public function index()
     {
         $ccds= CentreCollecte::all();
-       $recette_quittances= RecetteQuittance::all();
+       $recette_quittances= RecetteQuittance::orderBy('updated_at','desc')->get();
        return view('recette_quittance.index', compact('recette_quittances','ccds'));
     }
     public function etat_recap(){
@@ -120,6 +120,7 @@ class RecetteQuittanceController extends Controller
     }
     public function store(Request $request)
     {
+     if (Auth::user()->can('create_quittance_recette')) { 
         $today = today(); 
         $formulaire=FormulaireRecu::find($request->formulaire_prod);
         $quittance= RecetteQuittance::create([
@@ -154,6 +155,10 @@ class RecetteQuittanceController extends Controller
        ]);
     }
        return redirect()->back()->with('success','Lot enregistré avec success!');
+    }
+    else{
+        return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+    }
     }
     public function getById(Request $request)
     {
@@ -203,6 +208,7 @@ class RecetteQuittanceController extends Controller
     }
     public function modifier(Request $request)
     {
+     if (Auth::user()->can('recette.create')) { 
         $recetteQuittance=RecetteQuittance::find($request->quittance_id);
         $recetteQuittance->update([
             'date_siege'=>$request->date_siege,
@@ -220,6 +226,10 @@ class RecetteQuittanceController extends Controller
                 'montant'=>$request->montant,
         ]);
              return redirect( route('recette_quittance.index'));
+            }
+            else{
+                return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+            }
     }
 
     /**

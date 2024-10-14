@@ -34,9 +34,15 @@
                 </tr>
         </thead>
         <tbody>
+                        @php
+                            $i=0;
+                        @endphp
             @foreach($recette_quittances as $recette_quittance)
+                            @php
+                            $i++;
+                        @endphp
                 <tr>
-                    <td>{{$recette_quittance->id}}</td>
+                    <td>{{$i}}</td>
                     <td>{{$recette_quittance->ctid->region->libelle}}</td>
                     <td>{{$recette_quittance->ctid->libelle}}</td>
                     <td>{{$recette_quittance->ccd->libelle}}</td>

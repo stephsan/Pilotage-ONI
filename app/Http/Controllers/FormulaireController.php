@@ -39,7 +39,7 @@ class FormulaireController extends Controller
     }
     public function index()
     {
-        $formulaires=Formulaire::all();
+        $formulaires=Formulaire::orderBy('updated_at','desc')->get();
         $antennes=Antenne::all();
         $ctids=CentreTraitement::all();
         return view('formulaire.index', compact('antennes','formulaires','ctids'));
@@ -132,9 +132,8 @@ class FormulaireController extends Controller
     public function liste_save_formulaire_recus()
     {   $startOfThisYear = Carbon::now()->startOfYear();
         $endOfThisYear = Carbon::now()->endOfYear();
-        $formulaires=FormulaireRecu::whereBetween('created_at',[$startOfThisYear,$endOfThisYear])->get();
+        $formulaires=FormulaireRecu::whereBetween('created_at',[$startOfThisYear,$endOfThisYear])->orderBy('updated_at','desc')->get();
         if(Auth::user()->antenne_id==100){
-            //$antennes=Antenne::all();
             $ctids=CentreTraitement::all();
         }else{
             $antenne=Antenne::find(Auth::user()->antenne_id);

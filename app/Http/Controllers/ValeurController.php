@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Parametre;
 use App\Models\Valeur;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class ValeurController extends Controller
 {
     public function __construct()
@@ -19,9 +19,14 @@ class ValeurController extends Controller
      */
     public function index()
     {
-        $parametres = Parametre::all();
-        $valeurs= Valeur::with("parametre")->orderBy('updated_at', 'desc')->get();
-        return view('valeur.index', compact('valeurs', 'parametres'));
+    if (Auth::user()->can('gerer_parametre')) {
+            $parametres = Parametre::all();
+            $valeurs= Valeur::with("parametre")->orderBy('updated_at', 'desc')->get();
+            return view('valeur.index', compact('valeurs', 'parametres'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -31,9 +36,14 @@ class ValeurController extends Controller
      */
     public function create()
     {
+    if (Auth::user()->can('gerer_parametre')) {
         $valeurs = Valeur::all();
         $parametres = Parametre::all();
         return view('valeur.create', compact('parametres','valeurs'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -44,6 +54,7 @@ class ValeurController extends Controller
      */
     public function store(Request $request)
     {
+     if (Auth::user()->can('gerer_parametre')) {
         Valeur::create([
             'parametre_id'=>$request->parametre,
             'valeur_id'=>$request->parent,
@@ -52,6 +63,10 @@ class ValeurController extends Controller
             'code'=>$request->code,
         ]);
         return redirect(route('valeur.index'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -73,9 +88,14 @@ class ValeurController extends Controller
      */
     public function edit(Valeur $valeur)
     {
+        if (Auth::user()->can('gerer_parametre')) {
         $vals= Valeur::all();
         $parametres= Parametre::all();
         return view('valeur.edit',compact('valeur', 'parametres', 'vals'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -87,12 +107,17 @@ class ValeurController extends Controller
      */
     public function update(Request $request, Valeur $valeur)
     {
+    if (Auth::user()->can('gerer_parametre')) {
         $valeur->parametre_id= $request->parametre;
         $valeur->valeur_id= $request->parent;
         $valeur->libelle=$request->libelle;
         $valeur->description= $request->description;
         $valeur->save();
         return redirect(route('valeur.index'));
+    }
+    else{
+        return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+    }
     }
 
     /**

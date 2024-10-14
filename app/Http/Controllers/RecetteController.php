@@ -21,10 +21,15 @@ class RecetteController extends Controller
     }
     public function index()
     {
-        $recettes=Recette::all();
+     if (Auth::user()->can('recette.view')) { 
+        $recettes=Recette::orderBy('updated_at','desc')->get();
         $ccds= CentreCollecte::all();
         $nature_recettes=Valeur::where('parametre_id',5 )->get();
         return view('recette.index', compact('recettes','ccds','nature_recettes'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 public function synthese(){
         $recettes_regions= DB::table('recettes')
@@ -72,6 +77,7 @@ public function synthese(){
     }
     public function modifier(Request $request)
     {
+    if (Auth::user()->can('recette.update')) { 
         $recette=Recette::find($request->recette_id);
         $recette->update([
             'numero'=>$request->numero,
@@ -84,8 +90,13 @@ public function synthese(){
             'nom_complet_dela_personne'=>$request->denomination,
         ]);
              return redirect( route('recette.index'));
+            }
+            else{
+                return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+            }
     }
     public function valider( Request $request ){
+    if (Auth::user()->can('recette.valider')) { 
             foreach($request->recettes as $recette_id){
                 $recette=Recette::find($recette_id);
                 $recette->update([
@@ -93,12 +104,17 @@ public function synthese(){
                 ]);
             }
             return redirect()->back();
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+    if (Auth::user()->can('recette.create')) { 
         $today = today(); 
         if(Auth::user()->antenne_id==100){
             $antenne=env('antenne_centre_id');
@@ -119,6 +135,10 @@ public function synthese(){
             'numero'=>1,
        ]);
        return redirect()->route('recette.index');
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
     /**
      * Display the specified resource.

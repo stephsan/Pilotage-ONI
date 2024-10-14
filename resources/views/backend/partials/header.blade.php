@@ -195,7 +195,7 @@
             </ul>            
           </li> 
         @endcan
-        @can('recette.view', Auth::user())                   
+        @can('quittance.lister', Auth::user())                   
           <li class="nav-item @yield("recette")">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -203,7 +203,6 @@
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-          
             <ul class="nav nav-treeview">
             @can('quittance.lister', Auth::user())  
               <li class="nav-item">
@@ -265,7 +264,7 @@
             </ul> 
                     
           </li> 
-    @can('acceder_au_registre',Auth::user())
+    @can('acceder_a_la_synthese',Auth::user())
           <li class="nav-item @yield("statistique")">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -297,7 +296,7 @@
                     
           </li>
       @endcan      
-          @can('user.create', Auth::user()) 
+          @can('gerer_user', Auth::user()) 
             <li class="nav-item @yield("administration")" >
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -307,12 +306,14 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+          @can('gerer_entite', Auth::user()) 
               <li class="nav-item">
                 <a href="{{ route("centreCollecte.index") }}" class="nav-link @yield("administration-centreCollecte")">
                   <i class="fa fa-cogs nav-icon"></i>
                   <p>Centre de collecte</p>
                 </a>
               </li>
+         
               <li class="nav-item">
                 <a href="{{ route("centreTraitement.index") }}" class="nav-link @yield("administration-centreTraitement")">
                   <i class="fa fa-cogs nav-icon"></i>
@@ -331,6 +332,8 @@
                   <p>Entite</p>
                 </a>
               </li>
+           @endcan
+           @can('gerer_user', Auth::user()) 
               <li class="nav-item">
                 <a href="{{ route("user.index") }}" class="nav-link @yield("user")">
                   <i class="fa fa-users nav-icon"></i>
@@ -349,6 +352,8 @@
                   <p>Permissions</p>
                 </a>
               </li>
+          @endcan
+          @can('gerer_parametre', Auth::user()) 
               <li class="nav-item">
                 <a href="{{route('parametre.index')}}" class="nav-link @yield("administration-parametre")">
                   <i class="fa fa-cogs nav-icon"></i>
@@ -360,7 +365,8 @@
                   <i class="fa fa-cogs nav-icon"></i>
                   <p>Valeurs</p>
                 </a>
-              </li>                           
+              </li>
+        @endcan                           
             </ul>
             {{-- <li class="nav-item @yield("greffier")">
                 <a href="#" class="nav-link">

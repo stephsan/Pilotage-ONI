@@ -8,6 +8,7 @@ use App\Models\Valeur;
 use App\Models\Antenne;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CentreCollecteController extends Controller
 {
@@ -21,12 +22,17 @@ class CentreCollecteController extends Controller
      }
     public function index()
     {
+    if (Auth::user()->can('gerer_entite')) { 
         $centres = CentreCollecte::all();
         $ctids = CentreTraitement::all();
         $antennes=Antenne::all();
         $provinces=Valeur::where('parametre_id',2 )->get();
         $communes=Valeur::where('parametre_id',3 )->get();
         return view('centreCollecte.index', compact('ctids','centres','antennes','provinces','communes'));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     /**
@@ -42,6 +48,7 @@ class CentreCollecteController extends Controller
      */
     public function store(Request $request)
     {
+    if (Auth::user()->can('gerer_entite')) { 
         $ctid= CentreTraitement::find($request->ctid);
         $lastOne = DB::table('centre_collectes')->latest('id')->first();
         if($lastOne){
@@ -59,10 +66,15 @@ class CentreCollecteController extends Controller
              'description'=>$request->description,
              ]);
              return redirect( route('centreCollecte.index'));
+            }
+            else{
+                return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+            }
     }
 
     public function modifier(Request $request)
     {
+        if (Auth::user()->can('gerer_entite')) { 
         $ctid= CentreTraitement::find($request->ctid);
         $centre=CentreCollecte::find($request->centre_id);
         $centre->update([
@@ -74,6 +86,10 @@ class CentreCollecteController extends Controller
              'description'=>$request->description,
              ]);
              return redirect( route('centreCollecte.index'));
+            }
+            else{
+                return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+            }
     }
 
     /**

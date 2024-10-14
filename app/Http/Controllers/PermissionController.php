@@ -9,7 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PermissionController extends Controller
 {
-    //
+   
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){
         $permissions=Permission::all();
         return view('permissions.index', compact('permissions'));

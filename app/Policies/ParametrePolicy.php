@@ -22,7 +22,14 @@ class ParametrePolicy
     {
         //
     }
-
+        public function gerer_parametre(User $user)
+        {
+            return $this->getPermission($user,23);
+        }
+        public function gerer_entite(User $user)
+        {
+            return $this->getPermission($user,24);
+        }
     /**
      * Determine whether the user can view the model.
      *

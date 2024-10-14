@@ -37,6 +37,11 @@ class AuthServiceProvider extends ServiceProvider
         Gate::resource('user', UserPolicy::class);
         Gate::resource('parametre', UserPolicy::class);
         Gate::resource('user', UserPolicy::class);
+        
+        Gate::define('gerer_user', [UserPolicy::class, 'gerer_user'] );
+        Gate::define('gerer_parametre', [ParametrePolicy::class, 'gerer_parametre'] );
+        Gate::define('gerer_entite', [ParametrePolicy::class, 'gerer_entite'] );
+
         Gate::resource('recette', RecettePolicy::class);
         Gate::resource('formulaire', FormulairePolicy::class);
         Gate::define('recette.valider', [RecettePolicy::class, 'valider'] );

@@ -27,9 +27,16 @@
                 </tr>
         </thead>
         <tbody>
+                    @php
+                    $i=0;
+                @endphp
             @foreach($formulaires as $formulaire)
+                    @php
+                    $i++;
+                @endphp
                 <tr>
-                    <td>{{$formulaire->id}}</td>
+                   
+                    <td>{{$i}}</td>
                     <td>{{$formulaire->ctid->antenne->nom_de_lantenne}}</td>
                     <td>{{$formulaire->ctid->libelle}}</td>
                     <td>{{$formulaire->ccd->libelle}}</td>
@@ -43,7 +50,7 @@
                         @endif
                         
                     @endcan
-                    @can('quittance.create',Auth::user())
+                    @can('create_quittance_recette',Auth::user())
                         @if(return_nbre_quittance_recette($formulaire->id) == 0)
                             <button data-toggle="modal" onclick="edit_formulaire({{ $formulaire->id }});"  data-toggle="tooltip" title="Convertir en quittance recette" class="btn btn-xs btn-default" data-target="#create-recette" ><i class="fa fa-edit"></i></a>
                         @endif
@@ -125,7 +132,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group{{ $errors->has('nombre_carte_sortie') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="libelle">Nombre de csarte sortie<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="libelle">Nombre de carte sortie<span class="text-danger">*</span></label>
                                 <input id="nombre_carte_sortie" type="text" class="form-control" name="nombre_carte_sortie"  placeholder="Entrer le nombre de carte sortie" required autofocus>    
                                     @if ($errors->has('nombre_carte_sortie'))
                                     <span class="help-block">
@@ -554,7 +561,7 @@ function setMontantRecette(){
         var valeur_formulaire= $('#valeur_form_q').val()
         var nbre_formulaire= $('#nbre_formulaire_q').val()
         var nbre_rejet= $('#nbre_rejet_q').val()
-        if(nbre_rejet > nbre_formulaire ){
+        if( parseInt(nbre_rejet) > parseInt(nbre_formulaire) ){
             $('#message_rejet').show();
             $('#button_quittance').prop("disabled", true);
         }

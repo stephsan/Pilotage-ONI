@@ -27,9 +27,15 @@
                 </tr>
         </thead>
         <tbody>
+                @php
+                    $i=0;
+                @endphp
             @foreach($formulaires as $formulaire)
+                    @php
+                        $i++;
+                    @endphp
                 <tr>
-                    <td>{{$formulaire->id}}</td>
+                    <td>{{$i}}</td>
                     <td>{{$formulaire->ctid->antenne->nom_de_lantenne}}</td>
                     <td>{{$formulaire->ctid->libelle}}</td>
                     <td>{{$formulaire->premier_serie}}</td>
@@ -242,7 +248,7 @@
                     <div class="col-md-2">
                         <div class="form-group{{ $errors->has('quantite') ? ' has-error' : '' }}">
                             <label class=" control-label" for="quantite">Quantité<span class="text-danger">*</span></label>
-                            <input id="quantite" type="number" class="form-control" name="quantite"  placeholder="Nombre de formulaire" required autofocus>    
+                            <input id="quantite" type="number" class="form-control" name="quantite"  placeholder="Nombre de formulaire" onchange="verifier_seuil_max()" required autofocus>    
                                 @if ($errors->has('quantite'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('quantite') }}</strong>
@@ -315,7 +321,9 @@
       
     </script>
     <script>
-    
+    function verifier_seuil_max(){
+
+    }
     function edit_centre(id){
                 var id=id;
                 $("#formulaire_id").val(id);

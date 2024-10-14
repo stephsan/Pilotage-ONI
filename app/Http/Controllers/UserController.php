@@ -13,23 +13,36 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(){
-        $users= User::all();
-        return view('user.index', compact("users"));
+        if (Auth::user()->can('gerer_user')) {
+            $users= User::all();
+            return view('user.index', compact("users"));
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     public function create(){
-        if (Auth::user()) {
+        if (Auth::user()->can('gerer_user')) {
             $roles= Role::all();   
             $fonctions= Valeur::where('parametre_id',8)->get();  
             $antennes= Antenne::all();
             $entites= Entite::all();            
             return view("user.create", compact('fonctions',"roles", "antennes",'entites'));
-         }
+        }
+        else{
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
+        }
     }
 
     public function store(Request $request){
-        if (Auth::user()) {
+        if (Auth::user()->can('gerer_user')) {
             $request->validate([
                 "nom"=>"required",
                 "email"=>"required|email"             
@@ -48,6 +61,10 @@ class UserController extends Controller
             ]);
             $user->roles()->sync($request->roles);
             return redirect()->route("user.index");
+        }
+        else{
+        // flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->success();
+            return redirect()->back()->with('error',"Vous n'avez pas la permission pour effectuer cette action!");
         }
     }
 
