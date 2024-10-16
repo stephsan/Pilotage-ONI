@@ -53,6 +53,9 @@
                             <div class="btn-group">
                                 <a href="{{ route('user.edit',$user) }}" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>
                             </div>
+                            <div class="btn-group">
+                                <a href="#modal-user-reinitialise" data-toggle="modal" title="télécharger" class="btn btn-xs btn-success"  onclick="recup_id('{{$user->id}}')"><i class="fa fa-repeat"></i>  </a>
+                            </div>
                         
                     </td>
 
@@ -68,30 +71,30 @@
 @section('modalSection')
 
 <div id="modal-user-reinitialise" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header text-center">
-                    <h2 class="modal-title"><i class="fa fa-pencil"></i> Confirmation</h2>
-                </div>
-                <!-- END Modal Header -->
-
-                <!-- Modal Body -->
-                <div class="modal-body form-bordered">
-
-                            <div>
-                                <p>Voulez-vous vraiment Reinitialiser?</p>
-                            </div>
-                            <input type="hidden" name="id_table" id="id_table">
-                            <div class="text-right">
-                                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-sm btn-primary" onclick="recu_id();">OUI</button>
-                            </div>
-
-                </div>
-                <!-- END Modal Body -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header text-center">
+                <h2 class="modal-title"><i class="fa fa-pencil"></i> Reinitialiser le mot de passe</h2>
             </div>
+            <!-- END Modal Header -->
+
+            <!-- Modal Body -->
+            <div class="modal-body form-bordered">
+
+                        <div>
+                            <p>Voulez-vous vraiment reinitialiser le mot de passe de l'utilisateur? Un mot de passe aleatoire sera envoye par mail.</p>
+                        </div>
+                        <input type="hidden" name="user_pass" id="id_user_pass">
+                        <div class="text-right">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Fermer</button>
+                            <button type="button" class="btn btn-sm btn-warning" onclick="reinitialise_password();">Reinitialiser</button>
+                        </div>
+
+            </div>
+            <!-- END Modal Body -->
         </div>
+    </div>
 </div>
 <!-- Voir details users -->
 <div id="modal-voir-detail" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -228,22 +231,23 @@
             });
 
         }
-
-        function recu_id(){
-            //var id= document.getElementById('id_table').value;
+        function recup_id(id){
+                //console.log(id);
+                document.getElementById('id_user_pass').setAttribute("value", id);
+        }
+        function reinitialise_password(user){
             $(function(){
-                var id= $("#id_table").val();
-
-               //alert(id);
+                var id= $("#id_user_pass").val();
+                var url = "{{ route('user.reinitialize') }}";
                 $.ajax({
                     url: url,
                     type:'GET',
                     data: {id: id} ,
                     error:function(){alert('error');},
                     success:function(){
+                    
                         $('#modal-user-reinitialise').hide();
                         location.reload();
-
                     }
                 });
             });

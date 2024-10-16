@@ -120,12 +120,17 @@ class RegistreController extends Controller
             'nbre_dossier_rejete' => $request->nbre_dossier_rejete,
             'nbre_dossier_en_instance' => $request->nbre_dossier_en_instance,
 
+            'nbre_demande_saisie' => $request->nbre_demande_saisie,
+            'nbre_lot_introduit' => $request->nbre_lot_introduit,
+
             'nbre_dossier_recu' => $request->nbre_dossier_recu,
             'nbre_dossier_traite' => $request->nbre_dossier_traite,
             'nbre_passport_ord_faute' => $request->nbre_passport_ord_faute,
             'nbre_passport_ord_vierge_restant' => $request->nbre_passport_ord_vierge_restant,
             'nbre_passport_refugie_produit' => $request->nbre_passport_refugie_produit,
 
+            'nbre_demande_saisie' => $request->nbre_demande_saisie,
+            'nbre_lot_introduit' => $request->nbre_lot_introduit,
             'date_effet' => reformat_date($request->date_effet),
             'statut' => 0,
             'entite_id' => Auth::user()->entite_id,
@@ -215,14 +220,12 @@ class RegistreController extends Controller
             'effectif_mission' => $request->eff_mission,
             'effectif_malade' => $request->eff_maladie,
             'effectif_permission' => $request->eff_permission,
-            //champs production cnib
             'nbre_lot_introduit' => $request->nbre_lot_introduit,
             'nbre_demande_saisie' => $request->nbre_demande_saisie,
             'nbre_demande_supervise' => $request->nbre_demande_supervise,
             'nbre_carte_imprime' => $request->nbre_carte_imprime,
             'nbre_carte_assure' => $request->nrbre_carte_assure,
             'nbre_carte_endomage' => $request->nbre_carte_endomage,
-
             //champs biometrie
             'nbre_photos_a_verifier' => $request->nbre_photos_a_verifier,
             'nbre_photo_enrole_manuellement' => $request->nbre_photo_enrole_manuellement,

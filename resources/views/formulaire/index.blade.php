@@ -45,9 +45,7 @@
                     <td>{{format_date($formulaire->date_fourniture)}}</td>
                     <td class="text-center">
                             <div class="btn-group">
-                            
                                 <button  data-toggle="modal" onclick="edit_centre({{ $formulaire->id }});"  data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default" data-target="#update-centre" ><i class="fa fa-edit"></i></a>
-                            {{-- @endcan --}}
                             @can('role.delete',Auth::user())
                                 <a href="#modal-confirm-delete" onclick="delConfirm({{ $formulaire->id }});" data-toggle="modal" title="Supprimer" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
                             @endcan

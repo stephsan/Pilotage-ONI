@@ -556,7 +556,6 @@ function verifierSaisiequittance(type_operation){
                     }
                 });
 }
-
 function setMontantRecette(){
         var valeur_formulaire= $('#valeur_form_q').val()
         var nbre_formulaire= $('#nbre_formulaire_q').val()
