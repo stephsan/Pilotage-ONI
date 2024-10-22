@@ -38,7 +38,6 @@ class RegistreController extends Controller
                 $registres = Registre::where('antenne_id', Auth::user()->antenne_id)->get();
             }
         }
-
         if (Auth::user()->entite_id == env('ID_SERVICE_PRODUCTION')) {
             return view('registre.production', compact('registres', 'users'));
         }
@@ -59,6 +58,9 @@ class RegistreController extends Controller
         }
         if (Auth::user()->entite_id == env('ID_SERVICE_ENQUETE')) {
             return view('registre.enquete', compact('registres', 'users'));
+        }
+        if (Auth::user()->entite_id == env('ID_SERVICE_ARCHIVE')) {
+            return view('registre.archive', compact('registres', 'users'));
         }
     }
 
@@ -128,6 +130,10 @@ class RegistreController extends Controller
             'nbre_passport_ord_faute' => $request->nbre_passport_ord_faute,
             'nbre_passport_ord_vierge_restant' => $request->nbre_passport_ord_vierge_restant,
             'nbre_passport_refugie_produit' => $request->nbre_passport_refugie_produit,
+
+            'nbre_documents_poste1' => $request->nbre_doc_archive_p1,
+            'nbre_documents_poste2' => $request->nbre_doc_archive_p2,
+            'nbre_documents_poste3' => $request->nbre_doc_archive_p3,
 
             'nbre_demande_saisie' => $request->nbre_demande_saisie,
             'nbre_lot_introduit' => $request->nbre_lot_introduit,
@@ -259,6 +265,10 @@ class RegistreController extends Controller
             'nbre_passport_ord_faute' => $request->nbre_passport_ord_faute,
             'nbre_passport_ord_vierge_restant' => $request->nbre_passport_ord_vierge_restant,
             'nbre_passport_refugie_produit' => $request->nbre_passport_refugie_produit,
+
+            'nbre_documents_poste1' => $request->nbre_doc_archive_p1,
+            'nbre_documents_poste2' => $request->nbre_doc_archive_p2,
+            'nbre_documents_poste3' => $request->nbre_doc_archive_p3,
 
             'date_effet' => reformat_date($request->date_effet),
             'statut' => 0,

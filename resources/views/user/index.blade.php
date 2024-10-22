@@ -165,7 +165,6 @@
 <div id="modal-confirm-delete" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <!-- Modal Header -->
                 <div class="modal-header text-center">
                     <h2 class="modal-title"><i class="fa fa-pencil"></i> Confirmation</h2>
                 </div>
@@ -191,10 +190,8 @@
     </div>
     {{-- cette fonction javascript permet de definir l'action du formulaire dynamiquement. l'action route user reinitialise dans le formulaire dont id est reini_user --}}
     <script>
-
     function detailUser(id){
                 var id=id;
-
                 $.ajax({
                     url: url,
                     type:'GET',
@@ -245,18 +242,15 @@
                     data: {id: id} ,
                     error:function(){alert('error');},
                     success:function(){
-                    
                         $('#modal-user-reinitialise').hide();
                         location.reload();
                     }
                 });
             });
         }
-
         function supp_id(){
             $(function(){
                 var id= $("#id_table").val();
-
                //alert(id);
                 $.ajax({
                     url: url,

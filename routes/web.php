@@ -14,6 +14,7 @@ use App\Http\Controllers\RegistreController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\TacheController;
+use App\Http\Controllers\TestlinController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ValeurController;
 use Illuminate\Support\Facades\Route;
@@ -90,6 +91,10 @@ Route::post('store/sortie/formulaire/', [FormulaireController::class, 'store_for
 Route::get('recette/par/antenne', [DashboardController::class, 'recette_par_antenne'])->name('recette.antenne');
 Route::get('prod_cnib/par/antenne', [DashboardController::class, 'carte_imprime_par_antenne'])->name('production.antenne');
 Route::get('formulaire/par/antenne', [DashboardController::class, 'formulaire_par_antenne'])->name('formulaire.antenne');
+Route::get('teslin/mouvements', [TestlinController::class, 'index'])->name('testlin.index');
+Route::post('teslin/mouvements/storing', [TestlinController::class, 'store'])->name('testlin.store');
+Route::get('/getById/testlin', [TestlinController::class, 'getById'])->name('mouvement_testlin.getById');
+Route::post('teslin/mouvements/updateting', [TestlinController::class, 'modifier'])->name('testlin.modifier');
 
 Route::middleware([
     'auth:sanctum',

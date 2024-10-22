@@ -9,7 +9,7 @@
     <button  data-toggle="modal" class="btn btn-success col-md-2 pull-right mt-2" style="margin-bottom: 7px;" data-target="#create-registre"><span></span> Ajouter une ligne</button>
 @endcan
     <div class="card-header" style="margin-bottom: 10px;">
-      <h3 class="card-title">Registre</h3>
+      <h3 class="card-title">Registre Archive </h3>
     </div>
 
 <div class="table-responsive">
@@ -24,16 +24,22 @@
                     <th>En mission</th>
                     <th>Absent</th>
                     <th>Malade</th>
-                    <th>Nombre de cartes recus</th>
-                    <th>Nombre de carte disponibles</th>
-                    <th>Nombre de carte restituées</th>
+                    <th>Nombre de documents archivés Poste1</th>
+                    <th>Nombre de documents archivés Poste2</th>
+                    <th>Nombre de documents archivés Poste3</th>
                     <th>Actions</th>
                 </tr>
         </thead>
         <tbody>
+                  @php
+                    $i=0;
+                @endphp
             @foreach($registres as $registre)
+                @php
+                    $i+=1;
+                @endphp
                 <tr>
-                    <td>{{$registre->id}}</td>
+                    <td>{{$i}}</td>
                     <td>{{$registre->date_effet}}</td>
                     <td>{{$registre->effectif_theorique}}</td>
                     <td>{{$registre->effectif_present}}</td>
@@ -41,9 +47,9 @@
                     <td>{{$registre->effectif_mission}}</td>
                     <td>{{$registre->effectif_absent}}</td>
                     <td>{{$registre->effectif_malade}}</td>
-                    <td>{{$registre->nbre_de_carte_disponible}}</td>
-                    <td>{{$registre->nbre_de_carte_restitue}}</td>
-                    <td>{{$registre->nbre_de_carte_recus}}</td>
+                    <td>{{$registre->nbre_documents_poste1}}</td>
+                    <td>{{$registre->nbre_documents_poste2}}</td>
+                    <td>{{$registre->nbre_documents_poste3}}</td>
                     <td class="text-center">
                             <div class="btn-group">
                             @can('modifier_le_registre',Auth::user())
@@ -67,9 +73,9 @@
                     <th>En mission</th>
                     <th>Absent</th>
                     <th>Malade</th>
-                    <th>Nombre de cartes recus</th>
-                    <th>Nombre de carte disponibles</th>
-                    <th>Nombre de carte restituées</th>
+                    <th>Nombre de documents archivés Poste1</th>
+                    <th>Nombre de documents archivés Poste2</th>
+                    <th>Nombre de documents archivés Poste3</th>
                     <th>Actions</th>
             </tr>
         </tfoot>
@@ -91,7 +97,6 @@
             <form id="form-validation" method="POST"  action="{{ route('registre.modifier') }}" class="form-horizontal form-bordered" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input type="hidden" id="id_registre" name="registre_id">
-                
                 <div class="row">
                     <div class="col-md-8" >
                         <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
@@ -189,14 +194,14 @@
                         </div>
                     </div>
                </fieldset>
-               <hr>
+            
                <fieldset>
                 <legend>Statistique du jour</legend>
                 <div class="row">
                         <div class="col-md-6">
                             <div class="form-group{{ $errors->has('nbre_doc_archive_p1') ? ' has-error' : '' }}">
                                 <label class=" control-label" for="nbre_doc_archive_p1">Nbre de documents archivés au poste1<span class="text-danger">*</span></label>
-                                <input id="nbre_doc_archive_p1_u" type="number"  class="form-control" name="nbre_doc_archive_p1" min="0" placeholder="Entrer nombre de demande saisie" required autofocus>    
+                                <input id="nbre_doc_archive_p1_u" type="number"  class="form-control" name="nbre_doc_archive_p1" min="0" placeholder="Entrer nombre de document archivés au poste 1" required autofocus>    
                                     @if ($errors->has('nbre_doc_archive_p1'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('nbre_doc_archive_p1') }}</strong>
@@ -207,7 +212,7 @@
                         <div class="col-md-6">
                             <div class="form-group{{ $errors->has('nbre_doc_archive_p2') ? ' has-error' : '' }}">
                                 <label class=" control-label" for="nbre_demande_saisie">Nbre de documents archivés au poste2<em></em><span class="text-danger">*</span></label>
-                                <input id="nbre_doc_archive_p2_u" type="number"  class="form-control" name="nbre_doc_archive_p2" min="0" placeholder="Entrer nombre de photos enrolées manuellement" required autofocus>    
+                                <input id="nbre_doc_archive_p2_u" type="number"  class="form-control" name="nbre_doc_archive_p2" min="0" placeholder="Entrer nombre de document archivés au poste 2" required autofocus>    
                                     @if ($errors->has('nbre_doc_archive_p2'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('nbre_doc_archive_p2') }}</strong>
@@ -218,7 +223,7 @@
                         <div class="col-md-6">
                             <div class="form-group{{ $errors->has('nbre_doc_archive_p3') ? ' has-error' : '' }}">
                                 <label class=" control-label" for="nbre_demande_saisie">Nbre de documents archivés au poste3<em></em><span class="text-danger">*</span></label>
-                                <input id="nbre_doc_archive_p3_u" type="number"  class="form-control" name="nbre_doc_archive_p3" min="0" placeholder="Entrer nombre de photos enrolées manuellement" required autofocus>    
+                                <input id="nbre_doc_archive_p3_u" type="number"  class="form-control" name="nbre_doc_archive_p3" min="0" placeholder="Entrer nombre de document archivés au poste 3" required autofocus>    
                                     @if ($errors->has('nbre_doc_archive_p3'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('nbre_doc_archive_p3') }}</strong>
@@ -236,10 +241,11 @@
                     </div>
                 
            </fieldset>
-        <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-            <button type="submit" class="btn btn-success"><i class="fa fa-arrow-right"></i> Enregistrer</button>
-        </div> 
+           
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-arrow-right"></i> Enregistrer</button>
+                </div> 
         </form>
         </div>
       
@@ -252,7 +258,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Ajouter une nouvelle ligne au registre</h4>
+          <h4 class="modal-title">Ajouter une nouvelle ligne au registre archives</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -263,7 +269,7 @@
                 <div class="row">
                     <div class="col-md-8" >
                         <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
-                            <label class=" control-label" for="libelle">Date concernée<span class="text-danger">*</span></label>
+                            <label class=" control-label" for="libelle">Date concernée : <span class="text-danger">*</span></label>
                             <input id="date_effet" type="text"  class="form-control date_affecte" name="date_effet"  required autofocus>    
                                 @if ($errors->has('date_effet'))
                                 <span class="help-block">
@@ -334,31 +340,7 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
-    <div id="modal-confirm-delete" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Modal Header -->
-                    <div class="modal-header text-center">
-                        <h2 class="modal-title"><i class="fa fa-pencil"></i> Confirmation</h2>
-                    </div>
-                    <!-- END Modal Header -->
-
-                    <!-- Modal Body -->
-                    <div class="modal-body">
-                            <input type="hidden" name="id_table" id="id_table">
-                                <p>Voulez-vous vraiment Supprimer ce role ??</p>
-                            <div class="form-group form-actions">
-                                <div class="text-right">
-                                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fermer</button>
-                                    <button type="submit" class="btn btn-sm btn-primary" onclick="supp_id();">OUI</button>
-                                </div>
-                            </div>
-
-                    </div>
-                    <!-- END Modal Body -->
-                </div>
-            </div>
-    </div>
+    
     <script>
 
     function edit_registre(id){
@@ -374,15 +356,16 @@
                     success:function(data){
                         console.log(data)
                         $("#eff_theorique_u").val(data.effectif_theorique);
+                        $("#date_effet_u").val(data.date_effet);
                         $("#eff_present_u").val(data.effectif_present);
                         $("#eff_absent_u").val(data.effectif_absent);
                         $("#eff_conge_u").val(data.effectif_conge);
                         $("#eff_mission_u").val(data.effectif_mission);
                         $("#eff_maladie_u").val(data.effectif_malade);
                         $("#eff_permission_u").val(data.effectif_permission);
-                        $("#nbre_de_carte_disponible_u").val(data.nbre_de_carte_disponible);
-                        $("#nbre_de_carte_restitue_u").val(data.nbre_de_carte_restitue);
-                        $("#nbre_de_carte_recus_u").val(data.nbre_de_carte_recus);
+                        $("#nbre_doc_archive_p1_u").val(data.nbre_documents_poste1);
+                        $("#nbre_doc_archive_p2_u").val(data.nbre_documents_poste2);
+                        $("#nbre_doc_archive_p3_u").val(data.nbre_documents_poste3);
                         $("#id_registre").val(data.id);
 
                     }

@@ -33,7 +33,14 @@
                 </tr>
         </thead>
         <tbody>
+                        @php
+                        $i=0;
+                    @endphp  
             @foreach($registres as $registre)
+
+                            @php
+                            $i+=1;
+                        @endphp  
                 <tr>
                     <td>{{$registre->id}}</td>
                     <td>{{$registre->date_effet}}</td>

@@ -32,9 +32,15 @@
                 </tr>
         </thead>
         <tbody>
+                        @php
+                        $i=0;
+                    @endphp  
             @foreach($registres as $registre)
+                            @php
+                            $i+=1;
+                        @endphp  
                 <tr>
-                    <td>{{$registre->id}}</td>
+                    <td>{{$i}}</td>
                     <td>{{$registre->date_effet}}</td>
                     <td>{{$registre->effectif_theorique}}</td>
                     <td>{{$registre->effectif_present}}</td>

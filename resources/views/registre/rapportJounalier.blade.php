@@ -29,17 +29,7 @@
    
     
   </div>
-  {{-- <div class="col-md-4">
-    <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
-      <label class=" control-label" for="libelle">Date Fin <span class="text-danger">*</span></label>
-      <input id="date_siege_u" type="text"  class="form-control date_affecte" name="date_siege"  required autofocus>    
-          @if ($errors->has('date_affecte'))
-          <span class="help-block">
-              <strong>{{ $errors->first('date_affecte') }}</strong>
-          </span>
-          @endif
-    </div>
-  </div> --}}
+  
   <div class="col-md-3">
     <button type="submit"  class="btn btn-success" style="margin-top: 32px;"   href="#"><span></span> Rechercher</button>
     {{-- <a  data-toggle="modal" class="btn btn-warning" style="margin-top: 32px;"   href="#"><span></span> Imprimer</a> --}}
