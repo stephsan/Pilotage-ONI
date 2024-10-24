@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Backend </title>
+  <title>Outils de pilotage de l'ONI </title>
 
   <!-- Google Font: Source Sans Pro -->
 
@@ -195,6 +195,7 @@
             </ul>            
           </li> 
         @endcan
+        @can('gerer_teslin', Auth::user())
         <li class="nav-item @yield("testlin")">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-chart-pie"></i>
@@ -203,34 +204,16 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-          
             <li class="nav-item">
             <a href="{{ route('testlin.index') }}" class="nav-link @yield("mouvement")">
                     <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
                     <p>Mouvements stock</p>
                   </a>
-            </li>
-         
-          @can('formulaire.receptionner', Auth::user()) 
-            <li class="nav-item @yield('administration-role')">
-            <a href="{{ route('formulaire_recu.liste') }}" class="nav-link @yield("reception-lot")">
-                    <i class="nav-icon fa fa-check-square"></i>
-                    <p>Reception des lots</p>
-                  </a>
-            </li>
-          @endcan
-        @can('formulaire.recap', Auth::user()) 
-        <li class="nav-item @yield('administration-role')">
-          <a href="{{ route('formulaire.etat') }}" class="nav-link @yield("recap")">
-                  <i class="nav-icon fa fa-check-square"></i>
-                  <p>Recap formulaires</p>
-                </a>
-          </li>
-          @endcan
-            
-                                       
+            </li>                            
           </ul>            
         </li> 
+        @endcan
+        
         @can('quittance.lister', Auth::user())                   
           <li class="nav-item @yield("recette")">
             <a href="#" class="nav-link">

@@ -64,13 +64,13 @@
           <!-- small box -->
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3>{{ $nombre_de_carte_produits->sum('nbre_carte_imprime') }}</h3>
-              <p>Nombre de cartes imprimée</p>
+              <h3>{{ $nombre_de_carte_produits->sum('stock_theorique') }}</h3>
+              <p>Stock de Teslin</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
-            <a href="{{ route('dashboard')}}?detail=carte_imprime" class="small-box-footer">Details <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{ route('dashboard')}}?detail=testlin" class="small-box-footer">Details <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->

@@ -7,6 +7,7 @@ use App\Models\Recette;
 use App\Models\RecetteQuittance;
 use App\Models\Registre;
 use App\Models\Tache;
+use App\Models\Testlin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +41,11 @@ class DashboardController extends Controller
         $nombre_de_passport_produits = Registre::where('entite_id', env('ID_SERVICE_PASSEPORT'))->whereBetween('date_effet', [$startOfYear, $endOfYear])->get();
         $statistique_cnib_du_mois_en_cours = Registre::where('entite_id', env('ID_SERVICE_PRODUCTION'))->whereBetween('date_effet', [$startOfCurrentMonth, $endOfCurrentMonth])->get();
 
+        $mouvement_teslins_entrees = Testlin::where('type_operation', 'entree')->get();
+        $mouvement_teslins_sorties = Testlin::where('type_operation', 'sortie')->get();
+        $mouvement_teslins_retours = Testlin::where('type_operation', 'retour')->get();
+        $stock_theorique = $mouvement_teslins_entrees->sum('quantite') + $mouvement_teslins_retours->sum('quantite') - $mouvement_teslins_sorties->sum('quantite');
+
         if (return_role_adequat(env('ID_MANAGER_GENERAL_ROLE'))) {
             if ($request->detail == 'carte_imprime') {
                 return view('backend.dashboard_detail_cnib', compact('statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
@@ -52,9 +58,12 @@ class DashboardController extends Controller
             } elseif ($request->detail == 'tache') {
                 return view('backend.dashboard_sec', compact('statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'mes_taches_encours', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
 
+            } elseif ($request->detail == 'testlin') {
+                return view('backend.dashboard_detail_teslin', compact('mouvement_teslins_entrees', 'mouvement_teslins_retours', 'mouvement_teslins_sorties', 'stock_theorique', 'statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
+
             } else {
                 // $nombre_de_carte_produits= Registre::where('entite_id',env('ID_SERVICE_PRODUCTION'))->whereBetween('date_effet', [$startOfYear, $endOfYear])->get();
-                return view('backend.dashboard', compact('statistique_cnib_du_mois_en_cours', 'nombre_de_passport_produits', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
+                return view('backend.dashboard', compact('stock_theorique', 'statistique_cnib_du_mois_en_cours', 'nombre_de_passport_produits', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
             }
         }
         if (return_role_adequat(env('ID_MANAGER_PRODUCTION'))) {
@@ -117,6 +126,9 @@ class DashboardController extends Controller
         }
         if (return_role_adequat(env('ID_ROLE_RECEPTION_LOT'))) {
             return redirect()->route('recette_quittance.index');
+        }
+        if (return_role_adequat(env('ID_ROLE_GERER_TESLIN'))) {
+            return redirect()->route('testlin.index');
         }
         //$taches_affectes=Tache::where('creer_par', Auth::user()->id)->get();
     }

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('testlins', function (Blueprint $table) {
             $table->id();
             $table->integer('antenne_id');
-            $table->integer('qte_sortie')->nullable();
-            $table->integer('qte_entree')->nullable();
+            $table->string('type_operation')->nullable();
+            $table->integer('quantite')->nullable();
             $table->string('reference');
             $table->date('date');
             $table->integer('creer_par');

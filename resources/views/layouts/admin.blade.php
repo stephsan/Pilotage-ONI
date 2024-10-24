@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Favicons -->
-    <link href="{{asset('frontend/img/logo-ecotec.jpg')}}" rel="icon">
+    <link href="{{asset('adminlte/logo-oni.jpg')}}" rel="icon">
 
     <link rel="stylesheet" href="{{asset('/css/login/bootstrap.min.css')}}" crossorigin="anonymous">
     <script src="{{asset('/theme/vendor/bootstrap/js/bootstrap.min.js')}}" crossorigin="anonymous" defer></script>

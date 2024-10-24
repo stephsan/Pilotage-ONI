@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\ye;
-use Illuminate\Auth\Access\Response;
 
 class DashboadboardPolicy
 {
@@ -63,18 +62,27 @@ class DashboadboardPolicy
     {
         //
     }
-    public function acceder_au_dashboard(User $user){
-        return $this->getPermission($user,16);
+
+    public function acceder_au_dashboard(User $user)
+    {
+        return $this->getPermission($user, 16);
     }
 
-    public function getPermission($user,$permission_id){
-        foreach($user->roles as $user_role){
-            foreach($user_role->permissions as $permission_role){
-                if($permission_role->id == $permission_id){
+    public function gerer_teslin(User $user)
+    {
+        return $this->getPermission($user, 25);
+    }
+
+    public function getPermission($user, $permission_id)
+    {
+        foreach ($user->roles as $user_role) {
+            foreach ($user_role->permissions as $permission_role) {
+                if ($permission_role->id == $permission_id) {
                     return true;
                 }
+            }
         }
+
+        return false;
     }
-    return false;
-}
 }
