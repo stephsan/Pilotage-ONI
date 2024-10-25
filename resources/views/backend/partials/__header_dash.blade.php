@@ -64,7 +64,7 @@
           <!-- small box -->
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3>{{ $nombre_de_carte_produits->sum('stock_theorique') }}</h3>
+              <h3>{{ $stock_theorique }}</h3>
               <p>Stock de Teslin</p>
             </div>
             <div class="icon">

@@ -94,12 +94,7 @@
           {{-- <span class="badge badge-warning navbar-badge">15</span> --}}
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          {{-- <span class="dropdown-item dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div> --}}
-          {{-- <a href="{{ route('logout') }}" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            
-          </a> --}}
+          
           
             <a href="{{ route('logout') }}" class="dropdown-item"
             onclick="event.preventDefault();
@@ -130,17 +125,7 @@
           <a href="#" class="d-block">{{Auth::user()->name}} {{Auth::user()->Prenom}}</a>
         </div>
       </div>
-      <!-- SidebarSearch Form -->
-      {{-- <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div> --}}
+     
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         @can('acceder_au_dashboard', Auth::user()) 
@@ -151,12 +136,7 @@
             </a>            
           </li>
         @endcan
-          {{-- <li class="nav-item">
-            <a href="{{route('dashboard')}}" class="nav-link @yield("dashboard")">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>Tableau De Bord</p>
-            </a>            
-          </li> --}}
+          
           @can('formulaire.recap', Auth::user()) 
           <li class="nav-item @yield("formulaire")">
             <a href="#" class="nav-link">

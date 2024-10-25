@@ -45,21 +45,20 @@ class DashboardController extends Controller
         $mouvement_teslins_sorties = Testlin::where('type_operation', 'sortie')->get();
         $mouvement_teslins_retours = Testlin::where('type_operation', 'retour')->get();
         $stock_theorique = $mouvement_teslins_entrees->sum('quantite') + $mouvement_teslins_retours->sum('quantite') - $mouvement_teslins_sorties->sum('quantite');
-
+        ///dd($stock_theorique);
         if (return_role_adequat(env('ID_MANAGER_GENERAL_ROLE'))) {
             if ($request->detail == 'carte_imprime') {
-                return view('backend.dashboard_detail_cnib', compact('statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
+                return view('backend.dashboard_detail_cnib', compact('stock_theorique', 'statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
 
             } elseif ($request->detail == 'recette') {
-                return view('backend.dashboard_detail_recette', compact('statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
+                return view('backend.dashboard_detail_recette', compact('stock_theorique', 'statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
             } elseif ($request->detail == 'formulaire_emise') {
-                return view('backend.dashboard_formulaire_emis', compact('statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
-
+                return view('backend.dashboard_formulaire_emis', compact('stock_theorique', 'statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
             } elseif ($request->detail == 'tache') {
-                return view('backend.dashboard_sec', compact('statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'mes_taches_encours', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
+                return view('backend.dashboard_sec', compact('stock_theorique', 'statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'mes_taches_encours', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
 
             } elseif ($request->detail == 'testlin') {
-                return view('backend.dashboard_detail_teslin', compact('mouvement_teslins_entrees', 'mouvement_teslins_retours', 'mouvement_teslins_sorties', 'stock_theorique', 'statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
+                return view('backend.dashboard_detail_teslin', compact('stock_theorique', 'mouvement_teslins_entrees', 'mouvement_teslins_retours', 'mouvement_teslins_sorties', 'stock_theorique', 'statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
 
             } else {
                 // $nombre_de_carte_produits= Registre::where('entite_id',env('ID_SERVICE_PRODUCTION'))->whereBetween('date_effet', [$startOfYear, $endOfYear])->get();
