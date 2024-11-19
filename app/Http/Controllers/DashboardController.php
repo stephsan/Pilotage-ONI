@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    public $startOfYear;
+
+    public $endOfYear;
+
     public function dash_principal(Request $request)
     {
         $tache_encours = Tache::whereIn('statut', [env('ID_STATUT_NON_DEMARRE'), env('ID_STATUT_ENCOURS')])->where('creer_par', Auth::user()->id)->orderBy('deadline', 'asc')->get();
@@ -87,16 +91,16 @@ class DashboardController extends Controller
                 ->get();
 
             if ($request->detail == 'formulaire_emise') {
-                return view('backend.dashboard_formulaire_emis', compact('statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
+                return view('backend.dashboard_formulaire_emis', compact('stock_theorique', 'statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
 
             } elseif ($request->detail == 'carte_imprime') {
-                return view('backend.dashboard_detail_cnib', compact('statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
+                return view('backend.dashboard_detail_cnib', compact('stock_theorique', 'statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
 
             } elseif ($request->detail == 'statistique_du_mois') {
-                return view('backend.dashboard_detail_stats_of_month', compact('prod_du_mois_par_antenne', 'statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
+                return view('backend.dashboard_detail_stats_of_month', compact('stock_theorique', 'prod_du_mois_par_antenne', 'statistique_cnib_du_mois_en_cours', 'nombre_de_carte_produits', 'tache_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
 
             } else {
-                return view('backend.dashboard_production', compact('nombre_de_passport_produits_hier', 'nombre_de_carte_produits_hier', 'statistique_cnib_du_mois_en_cours', 'nombre_de_passport_produits', 'nombre_de_carte_produits', 'mes_taches_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
+                return view('backend.dashboard_production', compact('stock_theorique', 'nombre_de_passport_produits_hier', 'nombre_de_carte_produits_hier', 'statistique_cnib_du_mois_en_cours', 'nombre_de_passport_produits', 'nombre_de_carte_produits', 'mes_taches_encours', 'recette_de_lannee_encours', 'tache_encours', 'nombre_de_formulaire_traite_par_la_recettes', 'nombre_de_formulaire_emis', 'recette_de_lannee_encours'));
             }
         }
         if (return_role_adequat(env('ID_ROLE_EMETTEUR_FORMULAIRE'))) {
@@ -177,10 +181,10 @@ class DashboardController extends Controller
 
     public function formulaire_par_antenne()
     {
-        $startOfYear = Carbon::now()->startOfYear();
+        $this->startOfYear = Carbon::now()->startOfYear();
         $tab_antenne = [];
         // Récupérer la date de la fin de l'année en cours
-        $endOfYear = Carbon::now()->endOfYear();
+        $this->endOfYear = Carbon::now()->endOfYear();
         $formulaire_par_antenne = DB::table('centre_traitements')
             ->leftjoin('formulaire_recus', function ($join) {
                 $join->on('formulaire_recus.centre_traitement_id', '=', 'centre_traitements.id');
@@ -189,7 +193,7 @@ class DashboardController extends Controller
                 $join->on('centre_traitements.antenne_id', '=', 'antennes.id');
             })
                             //->join('antennes','centre_traitements.antenne_id','=','antennes.id')
-            ->whereBetween('formulaire_recus.created_at', [$startOfYear, $endOfYear])
+            ->whereBetween('formulaire_recus.created_at', [$this->startOfYear, $this->endOfYear])
             ->groupBy('antennes.id')
             ->select('antennes.nom_de_lantenne as antenne',
                 'antennes.id as antenne_id',
@@ -201,14 +205,14 @@ class DashboardController extends Controller
         $formulaire_emis_par_antenne = DB::table('centre_traitements')
             ->leftjoin('formulaires', function ($join) {
                 $join->on('formulaires.centre_traitement_id', '=', 'centre_traitements.id')
-                    ->where('formulaires.centre_traitement_id', '!=', null);
-
+                    ->where('formulaires.centre_traitement_id', '!=', null)
+                    ->whereBetween('formulaires.date_fourniture', [$this->startOfYear, $this->endOfYear]);
             })
             ->leftjoin('antennes', function ($join) {
                 $join->on('centre_traitements.antenne_id', '=', 'antennes.id');
             })
                             //->join('antennes','centre_traitements.antenne_id','=','antennes.id')
-            ->whereBetween('formulaires.created_at', [$startOfYear, $endOfYear])
+           // ->whereBetween('formulaires.created_at', [$startOfYear, $endOfYear])
             ->groupBy('antennes.id')
             ->select('antennes.nom_de_lantenne as antenne',
                 'antennes.id as antenne_id',
@@ -216,6 +220,7 @@ class DashboardController extends Controller
             )
             ->get();
 
+        // dd($formulaire_emis_par_antenne);
         foreach ($formulaire_emis_par_antenne as $antenne) {
             $form_emis = $formulaire_emis_par_antenne->where('antenne_id', $antenne->antenne_id)->first()->nb_form_emis;
             if ($formulaire_par_antenne->where('antenne_id', $antenne->antenne_id)->first()) {

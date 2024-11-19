@@ -61,6 +61,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('enregistrer_dans_le_registre', [RegistrePolicy::class, 'enregistrer_dans_le_registre']);
         Gate::define('acceder_au_dashboard', [DashboadboardPolicy::class, 'acceder_au_dashboard']);
         Gate::define('gerer_teslin', [DashboadboardPolicy::class, 'gerer_teslin']);
+        Gate::define('lister_reception_formulaire', [FormulairePolicy::class, 'lister_reception_formulaire']);
 
     }
 }

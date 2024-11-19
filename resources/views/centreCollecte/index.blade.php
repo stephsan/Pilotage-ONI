@@ -100,7 +100,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label" for="example-chosen">Commune/Ville du centre<span class="text-danger">*</span></label>
-                                <select id="commune_u" name="commune" class="form-control select2" data-placeholder="Chosir la commune de l'AOP ..." onchange="changeValue('commune_u', 'arrondissement_u', {{ env('PARAMETRE_ID_ARRONDISSEMENT') }});" style="width: 100%;" required>
+                                <select id="commune_u" name="commune" class="form-control select2" data-placeholder="Chosir la commune du centre ..." onchange="changeValue('commune_u', 'arrondissement_u', {{ env('PARAMETRE_ID_ARRONDISSEMENT') }});" style="width: 100%;" required>
                                     @foreach ($communes as $commune )
                                     <option value="{{ $commune->id  }}" {{ old('region') == $commune->id ? 'selected' : '' }}>{{ $commune->libelle }}</option>
                                     @endforeach
@@ -180,7 +180,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label" for="example-chosen">Commune/Ville du centre<span class="text-danger">*</span></label>
-                                <select id="commune" name="commune" class="form-control select2" data-placeholder="Chosir la commune de l'AOP ..." onchange="changeValue('commune', 'arrondissement', {{ env('PARAMETRE_ID_ARRONDISSEMENT') }});" style="width: 100%;" required>
+                                <select id="commune" name="commune" class="form-control select2" data-placeholder="Chosir la commune de centre ..." onchange="changeValue('commune', 'arrondissement', {{ env('PARAMETRE_ID_ARRONDISSEMENT') }});" style="width: 100%;" required>
                                     <option  value="{{ old('commune') }}" {{ old('commune') == old('commune') ? 'selected' : '' }}>{{ getlibelle(old('commune')) }}</option><!-- Required for data-placeholder attribute to work with Chosen plugin -->
                                 </select>
                         </div>
@@ -267,15 +267,12 @@
 
     function edit_centre(id){
                 var id=id;
-                
                 $("#province_u").val('');
                 $("#commune_u").val('');
                 $("#libelle_u").val('');
                 $("#code_u").val('');
                 $("#id_centre").val(id);
                 $("#description_u").val('');
-              //  alert(id);
-                 //var centre_id= $("#edit_centre").val();
             var url = "{{ route('centreCollecte.getById') }}";
                 $.ajax({
                     url: url,
@@ -285,12 +282,10 @@
                     error:function(){alert('error');},
                     success:function(data){
                         console.log(data)
-                        //$('#region_u').prop('selectedIndex', 52);
                         $("#antenne_u").val(data.antenne).change();
-                        $("#ctid_u").val(data.ctid).selected();
+                        $("#ctid_u").val(data.ctid).change();
                         $("#commune_u").val(data.commune);
                         $("#libelle_u").val(data.libelle);
-
                         $("#description_u").val(data.description);
                     }
                 });

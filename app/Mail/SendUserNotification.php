@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,6 +16,7 @@ class SendUserNotification extends Mailable
      * Create a new message instance.
      */
     public $details;
+
     public function __construct($details)
     {
         $this->details = $details;
@@ -51,11 +51,13 @@ class SendUserNotification extends Mailable
     {
         return [];
     }
+
     public function build()
     {
-        $det=$this->details;
-        return $this->subject('Nouvelle  tâche')
-                    ->view('emails.new_task',compact('det'))
-                    ->with('details', $this->details);
+        $det = $this->details;
+
+        return $this->subject('Rupture de stock de Teslin')
+            ->view('emails.rupture_de_stock', compact('det'))
+            ->with('details', $this->details);
     }
 }

@@ -5,13 +5,12 @@
 
 @section('content')
 <div class="card card-success col-md-12 col-md-offset-2">
- @can('formulaire.create', Auth::user()) 
+@can('formulaire.create', Auth::user()) 
     <button  data-toggle="modal" class="btn btn-success col-md-2" data-target="#create-centre" style="margin-bottom: 7px;"><span></span> Affecter des formulaires</button>
 @endcan
     <div class="card-header" style="margin-bottom: 10px;">
       <h3 class="card-title">Situation des formulaires affectés aux CTID</h3>
     </div>
-
 <table id="example1" class="table table-bordered table-striped">
         <thead>
                 <tr style="background-color:#0b9e44; color:white">

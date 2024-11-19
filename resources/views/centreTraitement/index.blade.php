@@ -199,8 +199,11 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label" for="province_residence">Province du centre<span class="text-danger">*</span></label>
-                                <select id="province" name="province" class="form-control select2" onchange="changeValue('province', 'commune', {{ env('PARAMETRE_ID_COMMUNE') }});" data-placeholder="Chosir la province du centre de collecte .."  style="width: 100%;" required>
-                                    <option  value="{{ old('province') }}" {{ old('province') == old('province') ? 'selected' : '' }}>{{ getlibelle(old('province')) }}</option>
+                                <select id="province_u" name="province" class="form-control select2" onchange="changeValue('province', 'commune', {{ env('PARAMETRE_ID_COMMUNE') }});" data-placeholder="Chosir la province du centre de collecte .."  style="width: 100%;" required>
+                                    <option></option>
+                                    @foreach ($provinces as $province )
+                                            <option value="{{ $province->id  }}" {{ old('province') == $province->id ? 'selected' : '' }}>{{ $province->libelle }}</option>
+                                    @endforeach
                                 </select>
                         </div>
                     </div>
@@ -307,6 +310,7 @@
                         console.log(data)
                         $("#region_u").val(data.region_id).change();
                         $("#antenne_u").val(data.antenne_id).change();
+                        $("#province_u").val(data.province_id).change();
                         $("#libelle_u").val(data.libelle);
                         $("#code_u").val(data.code);
                         $("#description_u").val(data.description);

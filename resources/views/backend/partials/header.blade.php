@@ -154,9 +154,9 @@
                     </a>
               </li>
             @endcan
-            @can('formulaire.receptionner', Auth::user()) 
+            @can('lister_reception_formulaire', Auth::user()) 
               <li class="nav-item @yield('administration-role')">
-              <a href="{{ route('formulaire_recu.liste') }}" class="nav-link @yield("reception-lot")">
+                  <a href="{{ route('formulaire_recu.liste') }}" class="nav-link @yield("reception-lot")">
                       <i class="nav-icon fa fa-check-square"></i>
                       <p>Reception des lots</p>
                     </a>
