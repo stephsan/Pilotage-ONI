@@ -122,7 +122,7 @@
                         <div class="col-md-6" >
                             <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
                                 <label class=" control-label" for="libelle">Nombre de formulaire<span class="text-danger">*</span></label>
-                                <input id="nbre_formulaire_sortie" type="number" class="form-control" name="nombre_formulaire_sortie" disabled required autofocus>    
+                                <input id="nbre_formulaire_sortie" type="number" class="form-control nombre_formulaire" name="nombre_formulaire_sortie" disabled required autofocus>    
                                     @if ($errors->has('nombre_formulaire'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('nombre_formulaire') }}</strong>
@@ -270,7 +270,7 @@
             <div class="col-md-4" >
                 <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
                     <label class=" control-label" for="libelle">Nombre de formulaire<span class="text-danger">*</span></label>
-                    <input id="nbre_formulaire_q" type="number"  class="form-control" name="nombre_formulaire" disabled onchange="verifierSaisiequittance('ccd_u','nombre_formulaire_u','modification');" required autofocus>    
+                    <input id="nbre_formulaire_q" type="number"  class="form-control nombre_formulaire" name="nombre_formulaire" disabled onchange="verifierSaisiequittance('ccd_u','nombre_formulaire_u','modification');" required autofocus>    
                         @if ($errors->has('nombre_formulaire'))
                         <span class="help-block">
                             <strong>{{ $errors->first('nombre_formulaire') }}</strong>
@@ -380,7 +380,7 @@
             <div class="col-md-4" >
                 <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
                     <label class=" control-label" for="libelle">Nombre de formulaire<span class="text-danger">*</span></label>
-                    <input id="nbre_formulaire_u" type="number"  class="form-control" name="nombre_formulaire" onchange="verifierSaisiequittance('ccd_u','nbre_formulaire_u','modification','formulaire_recu');"  required autofocus>    
+                    <input id="nbre_formulaire_u" type="number"  class="form-control nombre_formulaire" name="nombre_formulaire" onchange="verifierSaisiequittance('ccd_u','nbre_formulaire_u','modification','formulaire_recu');"  required autofocus>    
                         @if ($errors->has('nombre_formulaire'))
                         <span class="help-block">
                             <strong>{{ $errors->first('nombre_formulaire') }}</strong>
@@ -392,7 +392,7 @@
         
         <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-            <button type="submit" class="btn btn-success"><i class="fa fa-arrow-right"></i> Enregistrer</button>
+            <button type="submit" class="btn btn-success save"><i class="fa fa-arrow-right"></i> Enregistrer</button>
         </div> 
         </form>
         </div>
@@ -483,7 +483,7 @@
             <div class="col-md-4" >
                 <div class="form-group{{ $errors->has('libelle') ? ' has-error' : '' }}">
                     <label class=" control-label" for="libelle">Nombre de formulaire<span class="text-danger">*</span></label>
-                    <input id="nbre_formulaire" type="number"  class="form-control" name="nombre_formulaire"  onchange="verifierSaisiequittance('ccd','nbre_formulaire','creation');" required autofocus>    
+                    <input id="nbre_formulaire" type="number"  class="form-control nombre_formulaire" name="nombre_formulaire"  onchange="verifierSaisiequittance('ccd','nbre_formulaire','creation');" required autofocus>    
                         @if ($errors->has('nombre_formulaire'))
                         <span class="help-block">
                             <strong>{{ $errors->first('nombre_formulaire') }}</strong>
@@ -494,7 +494,7 @@
         </div>
         <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-            <button type="submit" class="btn btn-success"><i class="fa fa-arrow-right"></i> Enregistrer</button>
+            <button type="submit"  class="btn btn-success save"><i class="fa fa-arrow-right"></i> Enregistrer</button>
         </div> 
         </form>
         </div>
@@ -532,30 +532,9 @@
     <script>
       
     </script>
+   
     <script>
-function verifierSaisiequittance(type_operation){
-           var nbre_formulaire= $('#nombre_formulaire').val()
-           var ccd= $('#ccd').val()
-          // $('#numero_oni_q').val(' ');
-            var url = "{{ route('quittance.verifier_saisie') }}";
-                $.ajax({
-                    url: url,
-                    type:'GET',
-                    dataType:'json',
-                    data: {nbre_formulaire: nbre_formulaire, ccd: ccd, type_operation: type_operation} ,
-                    error:function(){alert('error');},
-                    success:function(data){
-                        if(data < 0){
-                            $('#nombre_formulaire').val('')
-                            $('.message_verification_saisie_nombre').show()
-                        }
-                        else{
-                            $('.message_verification_saisie_nombre').hide()
-                        }
-                        
-                    }
-                });
-}
+
 function setMontantRecette(){
         var valeur_formulaire= $('#valeur_form_q').val()
         var nbre_formulaire= $('#nbre_formulaire_q').val()

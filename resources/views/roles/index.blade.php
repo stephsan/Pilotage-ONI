@@ -12,7 +12,7 @@
      <a href="{{ route('role.create') }}" class="btn btn-success col-md-2 pull-right mt-2"><span><i class="fa fa-plus"></i></span> Rôle</a>
 
 <div class="table-responsive">
-<table class="table table-vcenter table-condensed table-bordered listepdf">
+<table id="example1" class="table table-vcenter table-condensed table-bordered listepdf">
         <thead>
                 <tr>
                     <th>Libelle</th>

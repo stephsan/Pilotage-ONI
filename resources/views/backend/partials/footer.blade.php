@@ -165,7 +165,11 @@
         });
         });
 </script>
-
+<script>
+  $(document).ready(function(){
+    form.reset();
+  })
+</script>
 <script>
 
 function verifierSaisiequittance(ccd, nombre_formulaire, type_operation, idModification){
@@ -182,7 +186,7 @@ function verifierSaisiequittance(ccd, nombre_formulaire, type_operation, idModif
                     error:function(){alert('error');},
                     success:function(data){
                         if(data < 0){
-                            $('#nombre_formulaire').val('')
+                          $('#'+nombre_formulaire).val('')
                             $('.message_verification_saisie_nombre').show()
                         }
                         else{
