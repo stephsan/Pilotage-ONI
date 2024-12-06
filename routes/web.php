@@ -85,6 +85,11 @@ Route::post('/modifier/entite', [EntiteController::class, 'modifier'])->name('en
 Route::resource('registre', RegistreController::class);
 Route::get('/getById/registre', [RegistreController::class, 'getById'])->name('registre.getById');
 Route::post('/modifier/registre', [RegistreController::class, 'modifier'])->name('registre.modifier');
+Route::get('docs_pecifique/getById/registre', [RegistreController::class, 'getById_ds'])->name('registre.getByIdDs');
+Route::post('docs_pecifique/modifier/registre', [RegistreController::class, 'modifier_ds'])->name('registre.modifierDs');
+Route::post('docs_pecifique/store/registre', [RegistreController::class, 'store_ds'])->name('registre.store_ds');
+Route::get('docs_pecifique/lister/registre', [RegistreController::class, 'lister_registre_doc_specifique'])->name('registre.liste_ds');
+
 Route::get('/rapport/journalier/', [RegistreController::class, 'rapport_journalier'])->name('registre.rapport_journalier');
 Route::post('/rapport/journalierByDate/', [RegistreController::class, 'rapport_journalier_by_date'])->name('registre.rapport_journalier_bydate');
 Route::post('store/sortie/formulaire/', [FormulaireController::class, 'store_formulaire_sortie'])->name('formulaire.sortie');

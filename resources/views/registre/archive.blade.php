@@ -138,7 +138,13 @@
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('eff_absent') ? ' has-error' : '' }}">
                                 <label class=" control-label" for="eff_absent">Effectif absent<span class="text-danger">*</span></label>
-                                <input id="eff_absent_u" type="number"  class="form-control" name="eff_absent" min="0" placeholder="Entrer effectif absent" required autofocus>    
+                                <select id="example-chosen-multiple" name="absents[]" class="select-chosen" data-placeholder="Selectionner les absents" style="width: 250px;" multiple>
+                                   @foreach ($users as $user )
+                                         <option value="{{ $user->id }}"> {{ $user->matricule  }} - {{ $user->name  }} {{ $user->prenom  }} </option>
+                                   @endforeach
+                                    
+                                </select>
+                                {{-- <input id="eff_absent" type="number"  class="form-control" name="eff_absent" min="0" placeholder="Entrer effectif absent" required autofocus>     --}}
                                     @if ($errors->has('eff_absent'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('eff_absent') }}</strong>
@@ -235,7 +241,7 @@
                             <!-- textarea -->
                             <div class="form-group">
                               <label>Observations</label>
-                              <textarea class="form-control" id="observation_u" name="observation" rows="3" placeholder="Entrer une description du centre de collecte ..." required></textarea>
+                              <textarea class="form-control" id="observation_u" name="observation" rows="3" placeholder="observation ..." ></textarea>
                             </div>
                           </div>
                     </div>
@@ -321,7 +327,7 @@
                             <!-- textarea -->
                             <div class="form-group">
                               <label>Observations</label>
-                              <textarea class="form-control" id="observation" name="observation" rows="3" placeholder="Entrer une description du centre de collecte ..." required></textarea>
+                              <textarea class="form-control" id="observation" name="observation" rows="3" placeholder="observation ..." ></textarea>
                             </div>
                           </div>
                     </div>

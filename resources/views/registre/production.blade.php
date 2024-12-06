@@ -27,7 +27,7 @@
                     <th>Nbre de lot introduit</th>
                     <th>Nbre de demande saisie</th>
                     <th>Nbre de demande supervisé</th>
-                    <th>Nbre de demandes en instance</th>
+                    <th>Nbre de demandes vérifiées</th>
                     <th>Nbre de cartes endomagées</th>
                     <th>Actions</th>
                 </tr>
@@ -37,12 +37,11 @@
                         $i=0;
                     @endphp  
             @foreach($registres as $registre)
-
                             @php
                             $i+=1;
                         @endphp  
                 <tr>
-                    <td>{{$registre->id}}</td>
+                    <td>{{$i}}</td>
                     <td>{{$registre->date_effet}}</td>
                     <td>{{$registre->effectif_theorique}}</td>
                     <td>{{$registre->effectif_present}}</td>
@@ -53,7 +52,7 @@
                     <td>{{$registre->nbre_lot_introduit}}</td>
                     <td>{{$registre->nbre_demande_saisie}}</td>
                     <td>{{$registre->nbre_demande_supervise}}</td>
-                    <td>{{$registre->nbre_demande_en_instance}}</td>
+                    <td>{{$registre->nbre_demande_verifiees}}</td>
                     <td>{{$registre->nbre_carte_endomage}}</td>
                     <td class="text-center">
                             <div class="btn-group">
@@ -147,7 +146,13 @@
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('eff_absent') ? ' has-error' : '' }}">
                                 <label class=" control-label" for="eff_absent">Effectif absent<span class="text-danger">*</span></label>
-                                <input id="eff_absent_u" type="number"  class="form-control" name="eff_absent" min="0" placeholder="Entrer effectif absent" required autofocus>    
+                                <select id="example-chosen-multiple" name="absents[]" class="select-chosen" data-placeholder="Selectionner les absents" style="width: 250px;" multiple>
+                                   @foreach ($users as $user )
+                                         <option value="{{ $user->id }}"> {{ $user->matricule  }} - {{ $user->name  }} {{ $user->prenom  }} </option>
+                                   @endforeach
+                                    
+                                </select>
+                                {{-- <input id="eff_absent" type="number"  class="form-control" name="eff_absent" min="0" placeholder="Entrer effectif absent" required autofocus>     --}}
                                     @if ($errors->has('eff_absent'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('eff_absent') }}</strong>
@@ -209,7 +214,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nbre_lot_introduit') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="nbre_lot_introduit">Nbre de lot introduit<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="nbre_lot_introduit">Nbre de lots introduits<span class="text-danger">*</span></label>
                                 <input id="nbre_lot_introduit_u" type="number"  class="form-control" name="nbre_lot_introduit" min="0" placeholder="Entrer nombre de lot introduit" required autofocus>    
                                     @if ($errors->has('nbre_lot_introduit'))
                                     <span class="help-block">
@@ -220,7 +225,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nbre_demande_saisie') ? ' has-error' : '' }}">
-                                <label class="control-label" for="nbre_demande_saisie">Nbre de demande saisie<span class="text-danger">*</span></label>
+                                <label class="control-label" for="nbre_demande_saisie">Nbre de demandes saisies<span class="text-danger">*</span></label>
                                 <input id="nbre_demande_saisie_u" type="number"  class="form-control" name="nbre_demande_saisie" min="0" placeholder="Entrer nombre de demande saisie" required autofocus>    
                                     @if ($errors->has('nbre_demande_saisie'))
                                     <span class="help-block">
@@ -231,7 +236,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nbre_demande_supervise') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="nbre_demande_supervise">Demande supervisé<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="nbre_demande_supervise">Demandes supervisées<span class="text-danger">*</span></label>
                                 <input id="nbre_demande_supervise_u" type="number"  class="form-control" name="nbre_demande_supervise" min="0" placeholder="Entrer de demande supervisée" required autofocus>    
                                     @if ($errors->has('nbre_demande_supervise'))
                                     <span class="help-block">
@@ -244,7 +249,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nbre_carte_imprime') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="nbre_carte_imprime">Nbre de carte imprimée<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="nbre_carte_imprime">Nbre de cartes imprimées<span class="text-danger">*</span></label>
                                 <input id="nbre_carte_imprime_u" type="number"  class="form-control" name="nbre_carte_imprime" min="0" placeholder="Entrer nombre de carte imprimée" required autofocus>    
                                     @if ($errors->has('nbre_carte_imprime'))
                                     <span class="help-block">
@@ -255,7 +260,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nrbre_carte_assure') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="nrbre_carte_assure">Nbre de carte assuré<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="nrbre_carte_assure">Nbre de cartes assurées<span class="text-danger">*</span></label>
                                 <input id="nrbre_carte_assure_u" type="number"  class="form-control" name="nrbre_carte_assure" min="0" placeholder="nombre de carte assurée" required autofocus>    
                                     @if ($errors->has('nrbre_carte_assure'))
                                     <span class="help-block">
@@ -266,7 +271,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nbre_carte_endomage') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="nbre_carte_endomage">Nbre de carte endomagé<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="nbre_carte_endomage">Nbre de cartes endomagées<span class="text-danger">*</span></label>
                                 <input id="nbre_carte_endomage_u" type="number"  class="form-control" name="nbre_carte_endomage" min="0" placeholder="Entrer nombre de carte endommagée" required autofocus>    
                                     @if ($errors->has('nbre_carte_endomage'))
                                     <span class="help-block">
@@ -278,17 +283,17 @@
                     </div>
                     <div class="row">
                             <div class="col-md-4">
-                                <div class="form-group{{ $errors->has('nbre_demande_en_instance') ? ' has-error' : '' }}">
-                                    <label class=" control-label" for="nbre_demande_en_instance">Nbre de demande en instance<span class="text-danger">*</span></label>
-                                    <input id="nbre_demande_en_instance_u" type="number"  class="form-control" name="nbre_demande_en_instance" min="0" placeholder="nombre de demande en instance" required autofocus>    
-                                        @if ($errors->has('nbre_demande_en_instance'))
+                                <div class="form-group{{ $errors->has('nbre_demande_verifiee') ? ' has-error' : '' }}">
+                                    <label class=" control-label" for="nbre_demande_verifiee">Nbre de demandes vérifiées<span class="text-danger">*</span></label>
+                                    <input id="nbre_demande_verifiee_u" type="number"  class="form-control" name="nbre_demande_verifiee" min="0" placeholder="nombre de demandes vérifiées" required autofocus>    
+                                        @if ($errors->has('nbre_demande_verifiee'))
                                         <span class="help-block">
-                                            <strong>{{ $errors->first('nbre_demande_en_instance') }}</strong>
+                                            <strong>{{ $errors->first('nbre_demande_verifiee') }}</strong>
                                         </span>
                                         @endif
                                     </div>
                             </div>
-                            <div class="col-md-4">
+                            {{-- <div class="col-md-4">
                                 <div class="form-group{{ $errors->has('nbre_carte_transmise') ? ' has-error' : '' }}">
                                     <label class=" control-label" for="nbre_carte_transmise">Nbre de cartes Transmises<span class="text-danger">*</span></label>
                                     <input id="nbre_carte_transmise_u" type="number"  class="form-control" name="nbre_carte_transmise" min="0" placeholder="nombre de carte assurée" required autofocus>    
@@ -298,14 +303,14 @@
                                         </span>
                                         @endif
                                     </div>
-                            </div>
-                            <div class="col-md-4">
+                            </div> --}}
+                            {{-- <div class="col-md-4">
                                     <!-- textarea -->
                                     <div class="form-group">
                                       <label>Observations</label>
                                       <textarea class="form-control" id="observation_u" name="observation" rows="3" placeholder="Entrer une description du centre de collecte ..." required></textarea>
                                     </div>
-                            </div>
+                            </div> --}}
                     </div>
                </fieldset>
         <div class="modal-footer justify-content-between">
@@ -352,7 +357,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nbre_lot_introduit') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="nbre_lot_introduit">Nbre de lot introduit<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="nbre_lot_introduit">Nbre de lots introduits<span class="text-danger">*</span></label>
                                 <input id="nbre_lot_introduit" type="number"  class="form-control" name="nbre_lot_introduit" min="0" placeholder="Entrer nombre de lot introduit" required autofocus>    
                                     @if ($errors->has('nbre_lot_introduit'))
                                     <span class="help-block">
@@ -374,7 +379,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nbre_demande_supervise') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="nbre_demande_supervise">Demande supervisé<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="nbre_demande_supervise">Nbre Demandes supervisées<span class="text-danger">*</span></label>
                                 <input id="nbre_demande_supervise" type="number"  class="form-control" name="nbre_demande_supervise" min="0" placeholder="Entrer de demande supervisée" required autofocus>    
                                     @if ($errors->has('nbre_demande_supervise'))
                                     <span class="help-block">
@@ -387,7 +392,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nbre_carte_imprime') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="nbre_carte_imprime">Nbre de carte imprimée<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="nbre_carte_imprime">Nbre de cartes imprimées<span class="text-danger">*</span></label>
                                 <input id="nbre_carte_imprime" type="number"  class="form-control" name="nbre_carte_imprime" min="0" placeholder="Entrer nombre de carte imprimée" required autofocus>    
                                     @if ($errors->has('nbre_carte_imprime'))
                                     <span class="help-block">
@@ -398,7 +403,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nbre_carte_assure') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="nbre_carte_assure">Nbre de carte assurée<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="nbre_carte_assure">Nbre de cartes assurées<span class="text-danger">*</span></label>
                                 <input id="nbre_carte_assure" type="number"  class="form-control" name="nbre_carte_assure" min="0" placeholder="nombre de carte assurée" required autofocus>    
                                     @if ($errors->has('nbre_carte_assure'))
                                     <span class="help-block">
@@ -409,7 +414,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nbre_carte_endomage') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="nbre_carte_endomage">Nbre de carte endomagé<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="nbre_carte_endomage">Nbre de carte endomagées<span class="text-danger">*</span></label>
                                 <input id="nbre_carte_endomage" type="number"  class="form-control" name="nbre_carte_endomage" min="0" placeholder="Entrer nombre de carte endommagée" required autofocus>    
                                     @if ($errors->has('nbre_carte_endomage'))
                                     <span class="help-block">
@@ -421,17 +426,17 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="form-group{{ $errors->has('nbre_demande_en_instance') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="nbre_demande_en_instance">Nbre de demande en instance<span class="text-danger">*</span></label>
-                                <input id="nbre_demande_en_instance" type="number"  class="form-control" name="nbre_demande_en_instance" min="0" placeholder="nombre de demande en instance" required autofocus>    
-                                    @if ($errors->has('nbre_demande_en_instance'))
+                            <div class="form-group{{ $errors->has('nbre_demande_verifiee') ? ' has-error' : '' }}">
+                                <label class=" control-label" for="nbre_demande_verifiee">Nbre de demande vérifiées<span class="text-danger">*</span></label>
+                                <input id="nbre_demande_verifiee" type="number"  class="form-control" name="nbre_demande_verifiee" min="0" placeholder="nombre de demande vérifiées" required autofocus>    
+                                    @if ($errors->has('nbre_demande_verifiee'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('nbre_demande_en_instance') }}</strong>
+                                        <strong>{{ $errors->first('nbre_demande_verifiee') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="form-group{{ $errors->has('nbre_carte_transmise') ? ' has-error' : '' }}">
                                 <label class=" control-label" for="nbre_carte_transmise">Nbre de cartes Transmises<span class="text-danger">*</span></label>
                                 <input id="nbre_carte_transmise" type="number"  class="form-control" name="nbre_carte_transmise" min="0" placeholder="nombre de carte assurée" required autofocus>    
@@ -441,8 +446,8 @@
                                     </span>
                                     @endif
                                 </div>
-                        </div>
-                        <div class="col-md-4">
+                        </div> --}}
+                        {{-- <div class="col-md-4">
                             
                                 <!-- textarea -->
                                 <div class="form-group">
@@ -450,7 +455,7 @@
                                   <textarea class="form-control" id="observation" name="observation" rows="3" cols="10" placeholder="Observations..." required></textarea>
                                 </div>
                             
-                        </div>
+                        </div> --}}
                 </div>
                </fieldset>
                 
@@ -517,8 +522,9 @@
                         $("#nbre_demande_supervise_u").val(data.nbre_demande_supervise);
                         $("#nbre_carte_imprime_u").val(data.nbre_carte_imprime);
                         $("#nrbre_carte_assure_u").val(data.nbre_carte_assure);
-                        $("#nbre_demande_en_instance_u").val(data.nbre_demande_en_instance);
-                        $("#nbre_carte_transmise_u").val(data.nbre_carte_transmise);
+                        //alert(data.nbre_carte_assure)
+                        $("#nbre_demande_verifiee_u").val(data.nbre_demande_verifiees);
+                        //$("#nbre_carte_transmise_u").val(data.nbre_carte_transmise);
 
                         $("#nbre_carte_endomage_u").val(data.nbre_carte_endomage);
                         $("#nbre_carte_endomage_u").val(data.nbre_carte_endomage);

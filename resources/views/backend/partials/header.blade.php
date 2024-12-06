@@ -263,7 +263,7 @@
             </ul> 
                     
           </li> 
-    @can('acceder_a_la_synthese',Auth::user())
+    @can('acceder_au_registre',Auth::user())
           <li class="nav-item @yield("statistique")">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>

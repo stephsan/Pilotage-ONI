@@ -147,7 +147,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group{{ $errors->has('eff_absent') ? ' has-error' : '' }}">
-                                <label class=" control-label" for="eff_absent">Effectif absent<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="eff_absent">Effectif absent<span class="text-success">*</span></label>
                                 <input id="eff_absent_u" type="number"  class="form-control" name="eff_absent" min="0" placeholder="Entrer effectif absent" required autofocus>    
                                     @if ($errors->has('eff_absent'))
                                     <span class="help-block">
